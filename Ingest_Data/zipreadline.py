@@ -1,6 +1,6 @@
 
 import zipfile
-
+import upload_s3
 # import required module
 import os
 
@@ -45,6 +45,13 @@ def main():
                 with open(fname2, "a") as z:
                     z.write(root.open(name).readline().decode("utf-8"))
                 root.close()
+
+    upload_s3.upload_file_s3(fname1)
+    os.remove(fname1)
+    
+    upload_s3.upload_file_s3(fname2)
+    os.remove(fname2)
+    
 
 if __name__ == "__main__":
     main()
