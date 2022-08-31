@@ -1,0 +1,150 @@
+﻿TABLE NUMBER AND CONTENTS,DATA DICTIONARY REFERENCE NAME
+File Identification,FILEID
+State/US-Abbreviation (USPS),STUSAB
+Characteristic Iteration,CHARITER
+Characteristic Iteration File Sequence Number,CIFSN
+Logical Record Number,LOGRECNO
+Total:,P0010001
+Population of one race:,P0010002
+White alone,P0010003
+Black or African American alone,P0010004
+American Indian and Alaska Native alone,P0010005
+Asian alone,P0010006
+Native Hawaiian and Other Pacific Islander alone,P0010007
+Some Other Race alone,P0010008
+Population of two or more races:,P0010009
+Population of two races:,P0010010
+White; Black or African American,P0010011
+White; American Indian and Alaska Native,P0010012
+White; Asian,P0010013
+White; Native Hawaiian and Other Pacific Islander,P0010014
+White; Some Other Race,P0010015
+Black or African American; American Indian and Alaska Native,P0010016
+Black or African American; Asian,P0010017
+Black or African American; Native Hawaiian and Other Pacific Islander,P0010018
+Black or African American; Some Other Race,P0010019
+American Indian and Alaska Native; Asian,P0010020
+American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0010021
+American Indian and Alaska Native; Some Other Race,P0010022
+Asian; Native Hawaiian and Other Pacific Islander,P0010023
+Asian; Some Other Race,P0010024
+Native Hawaiian and Other Pacific Islander; Some Other Race,P0010025
+Population of three races:,P0010026
+White; Black or African American; American Indian and Alaska Native,P0010027
+White; Black or African American; Asian,P0010028
+White; Black or African American; Native Hawaiian and Other Pacific Islander,P0010029
+White; Black or African American; Some Other Race,P0010030
+White; American Indian and Alaska Native; Asian,P0010031
+White; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0010032
+White; American Indian and Alaska Native; Some Other Race,P0010033
+White; Asian; Native Hawaiian and Other Pacific Islander,P0010034
+White; Asian; Some Other Race,P0010035
+White; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010036
+Black or African American; American Indian and Alaska Native; Asian,P0010037
+Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0010038
+Black or African American; American Indian and Alaska Native; Some Other Race,P0010039
+Black or African American; Asian; Native Hawaiian and Other Pacific Islander,P0010040
+Black or African American; Asian; Some Other Race,P0010041
+Black or African American; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010042
+American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0010043
+American Indian and Alaska Native; Asian; Some Other Race,P0010044
+American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010045
+Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010046
+Population of four races:,P0010047
+White; Black or African American; American Indian and Alaska Native; Asian,P0010048
+White; Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0010049
+White; Black or African American; American Indian and Alaska Native; Some Other Race,P0010050
+White; Black or African American; Asian; Native Hawaiian and Other Pacific Islander,P0010051
+White; Black or African American; Asian; Some Other Race,P0010052
+White; Black or African American; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010053
+White; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0010054
+White; American Indian and Alaska Native; Asian; Some Other Race,P0010055
+White; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010056
+White; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010057
+Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0010058
+Black or African American; American Indian and Alaska Native; Asian; Some Other Race,P0010059
+Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010060
+Black or African American; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010061
+American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010062
+Population of five races:,P0010063
+White; Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0010064
+White; Black or African American; American Indian and Alaska Native; Asian; Some Other Race,P0010065
+White; Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010066
+White; Black or African American; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010067
+White; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010068
+Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010069
+Population of six races:,P0010070
+White; Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0010071
+Total:,P0020001
+Hispanic or Latino,P0020002
+Not Hispanic or Latino:,P0020003
+Population of one race:,P0020004
+White alone,P0020005
+Black or African American alone,P0020006
+American Indian and Alaska Native alone,P0020007
+Asian alone,P0020008
+Native Hawaiian and Other Pacific Islander alone,P0020009
+Some Other Race alone,P0020010
+Population of two or more races:,P0020011
+Population of two races:,P0020012
+White; Black or African American,P0020013
+White; American Indian and Alaska Native,P0020014
+White; Asian,P0020015
+White; Native Hawaiian and Other Pacific Islander,P0020016
+White; Some Other Race,P0020017
+Black or African American; American Indian and Alaska Native,P0020018
+Black or African American; Asian,P0020019
+Black or African American; Native Hawaiian and Other Pacific Islander,P0020020
+Black or African American; Some Other Race,P0020021
+American Indian and Alaska Native; Asian,P0020022
+American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0020023
+American Indian and Alaska Native; Some Other Race,P0020024
+Asian; Native Hawaiian and Other Pacific Islander,P0020025
+Asian; Some Other Race,P0020026
+Native Hawaiian and Other Pacific Islander; Some Other Race,P0020027
+Population of three races:,P0020028
+White; Black or African American; American Indian and Alaska Native,P0020029
+White; Black or African American; Asian,P0020030
+White; Black or African American; Native Hawaiian and Other Pacific Islander,P0020031
+White; Black or African American; Some Other Race,P0020032
+White; American Indian and Alaska Native; Asian,P0020033
+White; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0020034
+White; American Indian and Alaska Native; Some Other Race,P0020035
+White; Asian; Native Hawaiian and Other Pacific Islander,P0020036
+White; Asian; Some Other Race,P0020037
+White; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020038
+Black or African American; American Indian and Alaska Native; Asian,P0020039
+Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0020040
+Black or African American; American Indian and Alaska Native; Some Other Race,P0020041
+Black or African American; Asian; Native Hawaiian and Other Pacific Islander,P0020042
+Black or African American; Asian; Some Other Race,P0020043
+Black or African American; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020044
+American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0020045
+American Indian and Alaska Native; Asian; Some Other Race,P0020046
+American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020047
+Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020048
+Population of four races:,P0020049
+White; Black or African American; American Indian and Alaska Native; Asian,P0020050
+White; Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander,P0020051
+White; Black or African American; American Indian and Alaska Native; Some Other Race,P0020052
+White; Black or African American; Asian; Native Hawaiian and Other Pacific Islander,P0020053
+White; Black or African American; Asian; Some Other Race,P0020054
+White; Black or African American; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020055
+White; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0020056
+White; American Indian and Alaska Native; Asian; Some Other Race,P0020057
+White; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020058
+White; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020059
+Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0020060
+Black or African American; American Indian and Alaska Native; Asian; Some Other Race,P0020061
+Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020062
+Black or African American; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020063
+American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020064
+Population of five races:,P0020065
+White; Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander,P0020066
+White; Black or African American; American Indian and Alaska Native; Asian; Some Other Race,P0020067
+White; Black or African American; American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020068
+White; Black or African American; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020069
+White; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020070
+Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020071
+Population of six races:,P0020072
+White; Black or African American; American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race,P0020073
