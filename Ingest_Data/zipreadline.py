@@ -22,8 +22,8 @@ def main():
             y.write("\n")
         
 
-    for filename in os.listdir(directory):
-        if "us" in filename:
+    for filename in sorted(os.listdir(directory)):
+        if "usa" in filename:
             pass
         elif "00001" in filename:
             f = os.path.join(directory, filename)
@@ -34,8 +34,8 @@ def main():
                     y.write(root.open(name).readline().decode("utf-8"))
                 root.close()
 
-    for filename in os.listdir(directory):
-        if "us" in filename:
+    for filename in sorted(os.listdir(directory)):
+        if "usa" in filename:
             pass
         elif "00002" in filename:
             f = os.path.join(directory, filename)
