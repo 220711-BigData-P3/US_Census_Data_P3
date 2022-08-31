@@ -1,0 +1,27 @@
+2020 Squad plan:
+1. Each member downloads files.
+2. Unzip designated third of states.
+3. Pull single necessary file.
+4. Delete rest.
+5. Put designated file in repository.
+6. Once all 50 are collected:
+7. One person runs scrub script to pull the first row and append to csv file.
+8. Turn in singular 2020 csv file with the summary data for each state.
+
+wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
