@@ -315,10 +315,10 @@ hispPercDF2000 = hispPercDF2000.withColumn("Hispanic", format_number("Hispanic",
 catPercDF2000.show(52)
 hispPercDF2000.show(52)'''
 
-usData_1 = usData2000_1.union(usData2010_1).union(usData2020_1)
-usData_2 = usData2000_2.union(usData2010_2).union(usData2020_2)
-hispUS = hispUS2000.union(hispUS2010).union(hispUS2020)
-nonhispUS = nonhispUS2000.union(nonhispUS2010).union(nonhispUS2020)
+usData_1 = usData2000_1.union(usData2010_1).union(usData2020_1).repartition(1)
+usData_2 = usData2000_2.union(usData2010_2).union(usData2020_2).repartition(1)
+hispUS = hispUS2000.union(hispUS2010).union(hispUS2020).repartition(1)
+nonhispUS = nonhispUS2000.union(nonhispUS2010).union(nonhispUS2020).repartition(1)
 
 usData_1.show()
 usData_2.show()
@@ -329,10 +329,10 @@ nonhispUS.show()
 
 # --------------- SAVE FILES --------------- #
 savepath = path + "query_data/byCategory/"
-usData_1.write.csv(savepath + "usData_1")
-usData_2.write.csv(savepath + "usData_2")
-hispUS.write.csv(savepath + "hispUS")
-nonhispUS.write.csv(savepath + "nonhispUS")
+usData_1.write.csv(savepath + "usData_1", header=True)
+usData_2.write.csv(savepath + "usData_2", header=True)
+hispUS.write.csv(savepath + "hispUS", header=True)
+nonhispUS.write.csv(savepath + "nonhispUS", header=True)
 
 print("Complete!")
 
