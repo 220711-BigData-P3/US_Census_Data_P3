@@ -1,0 +1,125 @@
+from abbreviations import getmidwest, getnortheast, getsoutheast, getsouthwest, getstates
+from pyspark.context import SparkContext
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, to_str, substring, lit
+from pyspark.sql.types import StringType
+
+spark = SparkSession.builder.master("local").appName("data").getOrCreate()
+sc = SparkContext.getOrCreate()
+
+states = getstates()
+midwest = getmidwest()
+northeast = getnortheast()
+southeast = getsoutheast()
+southwest = getsouthwest
+_filepath = "file:/mnt/e/Rev-P3_All_States/"
+file_name = "2000_1.csv"
+rdd_2000 = (
+    spark.read.option("header", True)
+    .option("inferSchema", True)
+    .csv(_filepath + file_name)
+)
+
+
+#   $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\  
+#  $$  __$$\ $$$ __$$\ $$$ __$$\ $$$ __$$\ 
+#  \__/  $$ |$$$$\ $$ |$$$$\ $$ |$$$$\ $$ |
+#   $$$$$$  |$$\$$\$$ |$$\$$\$$ |$$\$$\$$ |
+#  $$  ____/ $$ \$$$$ |$$ \$$$$ |$$ \$$$$ |
+#  $$ |      $$ |\$$$ |$$ |\$$$ |$$ |\$$$ |
+#  $$$$$$$$\ \$$$$$$  /\$$$$$$  /\$$$$$$  /
+#  \________| \______/  \______/  \______/ 
+#                                          
+#                                          
+#                                          
+
+
+#######################################################################################
+#                                                                                     #
+#                                                                                     #
+#                   QUERYING EACH INDIVIDUAL REGION                                   #
+#                                                                                     #
+#                                                                                     #
+#######################################################################################
+data_view = rdd_2000.createOrReplaceTempView("2000_all")
+midwest_df = rdd_2000.filter((rdd_2000.STUSAB == "IA") | (rdd_2000.STUSAB == "KS") | (rdd_2000.STUSAB == "MO")| (rdd_2000.STUSAB == "NE")| (rdd_2000.STUSAB == "ND") | (rdd_2000.STUSAB == "SD") | (rdd_2000.STUSAB == "IL") | (rdd_2000.STUSAB == "IN") | (rdd_2000.STUSAB == "MI") | (rdd_2000.STUSAB == "MN") | (rdd_2000.STUSAB == "OH") | (rdd_2000.STUSAB == "WI"))
+midwest_view = midwest_df.createOrReplaceTempView("midwest_view")
+northeast_df = rdd_2000.filter((rdd_2000.STUSAB == "CT") | (rdd_2000.STUSAB == "DE") | (rdd_2000.STUSAB == "MA") | (rdd_2000.STUSAB == "ME") | (rdd_2000.STUSAB == "NH") | (rdd_2000.STUSAB == "NJ") | (rdd_2000.STUSAB == "NY") | (rdd_2000.STUSAB == "PA") | (rdd_2000.STUSAB == "RI") | (rdd_2000.STUSAB == "VT"))
+northeast_view = northeast_df.createOrReplaceTempView("northeast_view")
+southeast_df = rdd_2000.filter((rdd_2000.STUSAB == "AL") | (rdd_2000.STUSAB == "AR") | (rdd_2000.STUSAB == "FL") | (rdd_2000.STUSAB == "GA") | (rdd_2000.STUSAB == "KY") | (rdd_2000.STUSAB == "LA") | (rdd_2000.STUSAB == "MD") | (rdd_2000.STUSAB == "MS") | (rdd_2000.STUSAB == "NC") | (rdd_2000.STUSAB == "SC") | (rdd_2000.STUSAB == "TN") | (rdd_2000.STUSAB == "VA") | (rdd_2000.STUSAB == "WV"))
+southeast_view = southeast_df.createOrReplaceTempView("southeast_view")
+southwest_df = rdd_2000.filter((rdd_2000.STUSAB == "AZ") | (rdd_2000.STUSAB == "CA") | (rdd_2000.STUSAB == "CO") | (rdd_2000.STUSAB == "NV") | (rdd_2000.STUSAB == "NM") | (rdd_2000.STUSAB == "OK") | (rdd_2000.STUSAB == "TX") | (rdd_2000.STUSAB == "UT"))
+southwest_view = southwest_df.createOrReplaceTempView("southwest_view")
+west_df = rdd_2000.filter((rdd_2000.STUSAB == "AK") | (rdd_2000.STUSAB == "ID") | (rdd_2000.STUSAB == "MT") | (rdd_2000.STUSAB == "WY") | (rdd_2000.STUSAB == "WA") | (rdd_2000.STUSAB == "OR") | (rdd_2000.STUSAB == "HI"))
+west_view = west_df.createOrReplaceTempView("west_view")
+
+
+
+midwest_pop = spark.sql("SELECT SUM(P0010001) AS total_population FROM midwest_view")
+northeast_pop = spark.sql("SELECT SUM(P0010001) AS total_population FROM northeast_view")
+southeast_pop = spark.sql("SELECT SUM(P0010001) AS total_population FROM southeast_view")
+southwest_pop = spark.sql("SELECT SUM(P0010001) AS total_population FROM southwest_view")
+west_pop = spark.sql("SELECT SUM(P0010001) AS total_population FROM west_view")
+
+#######################################################################################
+#                                                                                     #
+#                                                                                     #
+#                 COMBINING THE INDIVIDUAL QUERIES TO DF                              #
+#                                                                                     #
+#                                                                                     #
+#######################################################################################
+
+midwest_final = midwest_pop.withColumn("region", lit("midwest"))
+northeast_final = northeast_pop.withColumn("region", lit("northeast"))
+southeast_final = southeast_pop.withColumn("region", lit("southeast"))
+southwest_final = southwest_pop.withColumn("region", lit("southwest"))
+west_final = west_pop.withColumn("region", lit("west"))
+
+
+
+all_regions_2000 = sc.union([northeast_final.rdd, midwest_final.rdd, southeast_final.rdd, southwest_final.rdd, west_final.rdd]).toDF()
+all_regions_view = all_regions_2000.createOrReplaceTempView("all_regions_view")
+all_regions_2000_query = spark.sql("SELECT region, total_population FROM all_regions_view")
+all_regions_2000_query.show()
+highest_pop_2000 = spark.sql("SELECT region, total_population FROM all_regions_view WHERE total_population = (SELECT MAX(total_population) FROM all_regions_view)")
+highest_pop_2000.show()
+
+
+#######################################################################################
+#                                                                                     #
+#                                                                                     #
+#                               WRITING TO FILE                                       #
+#                                                                                     #
+#                                                                                     #
+#######################################################################################
+file = open("pop_by_region_2000.csv", "w")
+file.write(f"midwest,{midwest_pop.collect()[0]['total_population']}\n")
+file.write(f"northeast,{northeast_pop.collect()[0]['total_population']}\n")
+file.write(f"southeast,{southeast_pop.collect()[0]['total_population']}\n")
+file.write(f"southwest,{southwest_pop.collect()[0]['total_population']}\n")
+file.write(f"west,{west_pop.collect()[0]['total_population']}\n")
+file.write(f"max,{highest_pop_2000.collect()[0]['region']}")
+
+file.close()
+
+
+
+#                                                          
+#                                                          
+#        ,----,       ,----..         ,---,     ,----..    
+#      .'   .' \     /   /   \     ,`--.' |    /   /   \   
+#    ,----,'    |   /   .     :   /    /  :   /   .     :  
+#    |    :  .  ;  .   /   ;.  \ :    |.' '  .   /   ;.  \ 
+#    ;    |.'  /  .   ;   /  ` ; `----':  | .   ;   /  ` ; 
+#    `----'/  ;   ;   |  ; \ ; |    '   ' ; ;   |  ; \ ; | 
+#      /  ;  /    |   :  | ; | '    |   | | |   :  | ; | ' 
+#     ;  /  /-,   .   |  ' ' ' :    '   : ; .   |  ' ' ' : 
+#    /  /  /.`|   '   ;  \; /  |    |   | ' '   ;  \; /  | 
+#  ./__;      :    \   \  ',  /     '   : |  \   \  ',  /  
+#  |   :    .'      ;   :    /      ;   |.'   ;   :    /   
+#  ;   | .'          \   \ .'       '---'      \   \ .'    
+#  `---'              `---`                     `---`      
+#                                                          
+
+
+spark.stop()
