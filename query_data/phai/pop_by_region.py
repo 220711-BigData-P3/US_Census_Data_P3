@@ -13,7 +13,7 @@ midwest = getmidwest()
 northeast = getnortheast()
 southeast = getsoutheast()
 southwest = getsouthwest
-_filepath = "file:/mnt/e/Rev-P3_All_States/"
+_filepath = "file:/mnt/c/Users/phait/Desktop/Revature/220711-BigData-P3/"
 file_name = "2000_1.csv"
 rdd_2000 = (
     spark.read.option("header", True)
