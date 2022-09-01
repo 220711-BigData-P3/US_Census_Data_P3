@@ -1,4 +1,4 @@
-from abbreviations import getmidwest, getnortheast, getsoutheast, getsouthwest, getstates
+from abbreviations import getmidwest, getnortheast, getsoutheast, getsouthwest, getwest, getstates
 from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, to_str, substring, lit
@@ -12,8 +12,11 @@ states = getstates()
 midwest = getmidwest()
 northeast = getnortheast()
 southeast = getsoutheast()
-southwest = getsouthwest
-_filepath = "file:/mnt/c/Users/phait/Desktop/Revature/220711-BigData-P3/"
+southwest = getsouthwest()
+west = getwest()
+
+_filepath = 'file:/home/strumunix/Rev-P3/US_Census_Data_P3/'
+# _filepath = "file:/mnt/c/Users/phait/Desktop/Revature/220711-BigData-P3/"
 file_name = "2000_1.csv"
 rdd_2000 = (
     spark.read.option("header", True)
@@ -43,38 +46,40 @@ rdd_2000 = (
 #                                                                                     #
 #######################################################################################
 data_view = rdd_2000.createOrReplaceTempView("2000_all")
-midwest_df = rdd_2000.filter((rdd_2000.STUSAB == "IA") | (rdd_2000.STUSAB == "KS") 
-                            | (rdd_2000.STUSAB == "MO")| (rdd_2000.STUSAB == "NE") 
-                            | (rdd_2000.STUSAB == "ND") | (rdd_2000.STUSAB == "SD") 
-                            | (rdd_2000.STUSAB == "IL") | (rdd_2000.STUSAB == "IN") 
-                            | (rdd_2000.STUSAB == "MI") | (rdd_2000.STUSAB == "MN") 
-                            | (rdd_2000.STUSAB == "OH") | (rdd_2000.STUSAB == "WI"))
+midwest_df = rdd_2000.filter(rdd_2000.STUSAB.isin(midwest))
+# midwest_df = rdd_2000.filter((rdd_2000.STUSAB == "IA") | (rdd_2000.STUSAB == "KS") 
+#                             | (rdd_2000.STUSAB == "MO")| (rdd_2000.STUSAB == "NE") 
+#                             | (rdd_2000.STUSAB == "ND") | (rdd_2000.STUSAB == "SD") 
+#                             | (rdd_2000.STUSAB == "IL") | (rdd_2000.STUSAB == "IN") 
+#                             | (rdd_2000.STUSAB == "MI") | (rdd_2000.STUSAB == "MN") 
+#                             | (rdd_2000.STUSAB == "OH") | (rdd_2000.STUSAB == "WI"))
 midwest_view = midwest_df.createOrReplaceTempView("midwest_view")
 
-northeast_df = rdd_2000.filter((rdd_2000.STUSAB == "CT") | (rdd_2000.STUSAB == "DE") 
-                              | (rdd_2000.STUSAB == "MA") | (rdd_2000.STUSAB == "ME") 
-                              | (rdd_2000.STUSAB == "NH") | (rdd_2000.STUSAB == "NJ") 
-                              | (rdd_2000.STUSAB == "NY") | (rdd_2000.STUSAB == "PA") 
-                              | (rdd_2000.STUSAB == "RI") | (rdd_2000.STUSAB == "VT"))
+northeast_df = rdd_2000.filter(rdd_2000.STUSAB.isin(northeast)) 
+# northeast_df = rdd_2000.filter((rdd_2000.STUSAB == "CT") | (rdd_2000.STUSAB == "DE") 
+#                               | (rdd_2000.STUSAB == "MA") | (rdd_2000.STUSAB == "ME") 
+#                               | (rdd_2000.STUSAB == "NH") | (rdd_2000.STUSAB == "NJ") 
+#                               | (rdd_2000.STUSAB == "NY") | (rdd_2000.STUSAB == "PA") 
+#                               | (rdd_2000.STUSAB == "RI") | (rdd_2000.STUSAB == "VT"))
 northeast_view = northeast_df.createOrReplaceTempView("northeast_view")
 
-southeast_df = rdd_2000.filter((rdd_2000.STUSAB == "AL") | (rdd_2000.STUSAB == "AR") 
-                              | (rdd_2000.STUSAB == "FL") | (rdd_2000.STUSAB == "GA") 
-                              | (rdd_2000.STUSAB == "KY") | (rdd_2000.STUSAB == "LA") 
-                              | (rdd_2000.STUSAB == "MD") | (rdd_2000.STUSAB == "MS") 
-                              | (rdd_2000.STUSAB == "NC") | (rdd_2000.STUSAB == "SC") 
-                              | (rdd_2000.STUSAB == "TN") | (rdd_2000.STUSAB == "VA") | (rdd_2000.STUSAB == "WV"))
+southeast_df = rdd_2000.filter(rdd_2000.STUSAB.isin(southeast))
+# southeast_df = rdd_2000.filter((rdd_2000.STUSAB == "AL") | (rdd_2000.STUSAB == "AR") 
+#                               | (rdd_2000.STUSAB == "FL") | (rdd_2000.STUSAB == "GA") 
+#                               | (rdd_2000.STUSAB == "KY") | (rdd_2000.STUSAB == "LA") 
+#                               | (rdd_2000.STUSAB == "MD") | (rdd_2000.STUSAB == "MS") 
+#                               | (rdd_2000.STUSAB == "NC") | (rdd_2000.STUSAB == "SC") 
+#                               | (rdd_2000.STUSAB == "TN") | (rdd_2000.STUSAB == "VA") | (rdd_2000.STUSAB == "WV"))
 southeast_view = southeast_df.createOrReplaceTempView("southeast_view")
 
-southwest_df = rdd_2000.filter((rdd_2000.STUSAB == "AZ") | (rdd_2000.STUSAB == "CA") 
-                              | (rdd_2000.STUSAB == "CO") | (rdd_2000.STUSAB == "NV") 
-                              | (rdd_2000.STUSAB == "NM") | (rdd_2000.STUSAB == "OK") 
-                              | (rdd_2000.STUSAB == "TX") | (rdd_2000.STUSAB == "UT"))
+southwest_df = rdd_2000.filter(rdd_2000.STUSAB.isin(southwest))
+# southwest_df = rdd_2000.filter((rdd_2000.STUSAB == "AZ") | (rdd_2000.STUSAB == "CA") 
+#                               | (rdd_2000.STUSAB == "CO") | (rdd_2000.STUSAB == "NV") 
+#                               | (rdd_2000.STUSAB == "NM") | (rdd_2000.STUSAB == "OK") 
+#                               | (rdd_2000.STUSAB == "TX") | (rdd_2000.STUSAB == "UT"))
 southwest_view = southwest_df.createOrReplaceTempView("southwest_view")
 
-west_df = rdd_2000.filter((rdd_2000.STUSAB == "AK") | (rdd_2000.STUSAB == "ID") 
-                        | (rdd_2000.STUSAB == "MT") | (rdd_2000.STUSAB == "WY") 
-                        | (rdd_2000.STUSAB == "WA") | (rdd_2000.STUSAB == "OR") | (rdd_2000.STUSAB == "HI"))
+west_df = rdd_2000.filter(rdd_2000.STUSAB.isin(west))
 west_view = west_df.createOrReplaceTempView("west_view")
 
 
@@ -118,8 +123,8 @@ highest_pop_2000.show()
 #                                                                                     #
 #                                                                                     #
 #######################################################################################
+'''
 file = open("pop_by_region_2000.csv", "w")
-
 for i in range(len(all_regions_2000.collect())):
     tmp_region = all_regions_2000.collect()[i]['region']
     tmp_pop = all_regions_2000.collect()[i]['total_population']
@@ -128,7 +133,7 @@ for i in range(len(all_regions_2000.collect())):
 file.write(f"max,{highest_pop_2000.collect()[0]['region']}")
 
 file.close()
-
+'''
 
 
 #                                                          
@@ -233,7 +238,7 @@ highest_pop_2010.show()
 #                                                                                     #
 #                                                                                     #
 #######################################################################################
-
+'''
 file = open("pop_by_region_2010.csv", "w")
 
 for i in range(len(all_regions_2010.collect())):
@@ -243,7 +248,7 @@ for i in range(len(all_regions_2010.collect())):
     file.write(f"{tmp_region},{tmp_pop}\n")
 file.write(f"max,{highest_pop_2010.collect()[0]['region']}")
 file.close()
-
+'''
 
 #   .----------------.  .----------------.  .----------------.  .----------------. 
 #  | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -343,7 +348,7 @@ highest_pop_2020.show()
 #                                                                                     #
 #                                                                                     #
 #######################################################################################
-
+'''
 file = open("pop_by_region_2020.csv", "w")
 for i in range(len(all_regions_2020.collect())):
     tmp_region = all_regions_2020.collect()[i]['region']
@@ -352,5 +357,5 @@ for i in range(len(all_regions_2020.collect())):
 
 file.write(f"max,{highest_pop_2010.collect()[0]['region']}")
 file.close()
-
+'''
 spark.stop()
