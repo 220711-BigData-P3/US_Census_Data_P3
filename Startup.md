@@ -1,6 +1,7 @@
 # Running the Program:
 This project is split into 2 main parts: Data Ingestion and Data Analysis.
-
+*[Data Ingest](#data-Ingestion)
+*[Data Analysis](#data-analysis)
 
 ## Data Injestion
 Packages needed:
@@ -49,6 +50,7 @@ ls
 ## Ingesting Data for 2000/2010
 
 2000 Script Location: Ingest_Data/2000_ingest.py
+
 2010 Script Location: Ingest_Data/2010_ingest.py
 
 1. Set ```directory ``` to reference the directory containing the zip files for 2010
@@ -73,6 +75,15 @@ python Ingest_Data/2010_ingest.py
 3. Executing the script will upload 2 csv files (2010_1.csv and 2010_2.csv) into an S3 Bucket
 
 ## Ingesting Data for 2020
+Script Location: Ingest_Data/2020_ingest.py
+
+2020_ingest.py showcases a different ingestion process from 2000/2010. The script incorporates a web-scraper functionality and processes the deletion of individual zip files after extraction. Also dynamic path creation negates the need for the user to manually insert a directory.
+
+From root level:
+```
+python Ingest_Data/2020_ingest.py
+```
+
 
 ## Data Analysis
 
