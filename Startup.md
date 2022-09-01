@@ -1,7 +1,8 @@
 # Running the Program:
 This project is split into 2 main parts: Data Ingestion and Data Analysis.
-*[Data Ingest](#data-Ingestion)
-*[Data Analysis](#data-analysis)
+
+* [Data Ingest](#data-Ingestion)
+* [Data Analysis](#data-analysis)
 
 ## Data Injestion
 Packages needed:
