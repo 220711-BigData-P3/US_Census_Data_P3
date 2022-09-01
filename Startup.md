@@ -1,4 +1,6 @@
 # Running the Program:
+This project is split into 2 main parts: Data Ingestion and Data Analysis.
+
 
 ## Data Injestion
 Packages needed:
@@ -20,7 +22,7 @@ pip install boto3
 
 ## Web Crawler Python Script for US Census Redistricting Data 2000/2010
 
-Location: Ingest_Data/main.py
+Location: Ingest_Data/web-scraper.py
 
 ```
  --change url depending on the year:
@@ -31,7 +33,7 @@ Location: Ingest_Data/main.py
 os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 [url]')
 ```
 1. Navigate to the directory where zip files should be placed
-2. Run python3/python [path_to_repo_on_local_machine]/Ingest_Data/main.py
+2. Run python3/python [path_to_repo_on_local_machine]/Ingest_Data/web-scraper.py
 3. The script will download every .zip file on the webpage onto the current directory
 
 Example:
@@ -39,31 +41,33 @@ Example:
 ```
 mkdir 2010_zipfiles
 cd 2010_zipfiles
-python3 /path/to/localmachine/repo/Ingest_Data/main.py
+python3 /path/to/localmachine/repo/Ingest_Data/web-scraper.py
 ls
 ```
 ![alt text](documentation_screenshots/zip_files.png "zip files in ubuntu")
 
-## Ingesting Data for 2000
+## Ingesting Data for 2000/2010
 
-## Ingesting Data for 2010
-Location: Ingest_Data/2010_unzip_write.py
+2000 Script Location: Ingest_Data/2000_ingest.py
+2010 Script Location: Ingest_Data/2010_ingest.py
 
 1. Set ```directory ``` to reference the directory containing the zip files for 2010
 
 ```
 def main():
-    # assign directory
-    directory = '[path_to_2010_zip_files_directory]'
-    initial_create()
-
+    directory = '[path_to_zip_files_directory]'
 ```
 
 2. Execute the python script
 
 From root level:
 ```
-python Ingest_Data/2010_unzip_write.py
+python Ingest_Data/2000_ingest.py
+
+and/or 
+
+python Ingest_Data/2010_ingest.py
+
 ```
 
 3. Executing the script will upload 2 csv files (2010_1.csv and 2010_2.csv) into an S3 Bucket
