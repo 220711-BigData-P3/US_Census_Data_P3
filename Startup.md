@@ -60,6 +60,7 @@ def main():
 ```
 
 2. Execute the python script
+
 From root level:
 ```
 python Ingest_Data/2010_unzip_write.py
