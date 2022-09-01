@@ -9,7 +9,9 @@ pip install boto3
 ### Goals
 1. Programmatically download/unzip all zip files from census website urls by decade (2000, 2010, 2020)
 2. Gather summary rows from each state to generate 2 csv files for each decade (The second file will house data under the "Over 18" category)
-3. Upload generated csv files into a AWS S3 Bucket
+3. Upload generated csv files into a AWS S3 Bucket (Credentials should be in a .env file inside the root level of repo.)
+    * Environment variable names: *ACCESS_KEY_ID, SECRET_ACCESS_KEY, BUCKET_NAME, REGION_NAME*
+
 ### Steps
 * [Scraping Zip Files From URL](#web-crawler-python-script-for-US-Census-Redistricting-Data-2000/2010)
 * [Ingesting 2000 Data](#ingesting-data-for-2000)
@@ -41,9 +43,6 @@ python3 /path/to/localmachine/repo/Ingest_Data/main.py
 ls
 ```
 ![alt text](documentation_screenshots/zip_files.png "zip files in ubuntu")
-
-## S3 Bucket Environment Variables
-Credentials for AWS S3 access are not included in the remote repository. Contact project owner for access and place received credentials inside a .env file in the root level of repository.
 
 ## Ingesting Data for 2000
 
