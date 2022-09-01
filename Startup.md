@@ -1,6 +1,99 @@
-# Web Crawler Script for US Census Redistricting Data 
-1. Navigate to the directory where zip files could be placed
+# Running the Program:
+This project is split into 2 main parts: Data Ingestion and Data Analysis.
+
+* [Data Ingest](#data-Ingestion)
+* [Data Analysis](#data-analysis)
+
+## Data Injestion
+Packages needed:
+```
+pip install python-dotenv
+pip install boto3
+```
+### Goals
+1. Programmatically download/unzip all zip files from census website urls by decade (2000, 2010, 2020)
+2. Gather summary rows from each state to generate 2 csv files for each decade (The second file will house data under the "Over 18" category)
+3. Upload generated csv files into a AWS S3 Bucket (Credentials should be in a .env file inside the root level of repo.)
+    * Environment variable names: *ACCESS_KEY_ID, SECRET_ACCESS_KEY, BUCKET_NAME, REGION_NAME*
+
+### Steps
+* [Scraping Zip Files From URL](#web-crawler-python-script-for-US-Census-Redistricting-Data-2000/2010)
+* [Ingesting 2000 Data](#ingesting-data-for-2000)
+* [Ingesting 2010 Data](#ingesting-data-for-2010)
+* [Injesting 2020 Data](#ingesting-data-for-2020)
+
+## Web Crawler Python Script for US Census Redistricting Data 2000/2010
+
+Location: Ingest_Data/web-scraper.py
+
+```
+ --change url depending on the year:
+ ---2000: https://www2.census.gov/census_2000/datasets/redistricting_file--pl_94-171/
+ ---2010: https://www2.census.gov/census_2010/redistricting_file--pl_94-171/
+ ---2020: https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/
+
+os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 [url]')
+```
+1. Navigate to the directory where zip files should be placed
+2. Run python3/python [path_to_repo_on_local_machine]/Ingest_Data/web-scraper.py
+3. The script will download every .zip file on the webpage onto the current directory
+
+Example:
+
+```
+mkdir 2010_zipfiles
+cd 2010_zipfiles
+python3 /path/to/localmachine/repo/Ingest_Data/web-scraper.py
+ls
+```
+![alt text](documentation_screenshots/zip_files.png "zip files in ubuntu")
+
+## Ingesting Data for 2000/2010
+
+2000 Script Location: Ingest_Data/2000_ingest.py
+
+2010 Script Location: Ingest_Data/2010_ingest.py
+
+1. Set ```directory ``` to reference the directory containing the zip files for 2010
+
+```
+def main():
+    directory = '[path_to_zip_files_directory]'
+```
+
+2. Execute the python script
+
+From root level:
+```
+python Ingest_Data/2000_ingest.py
+
+and/or 
+
+python Ingest_Data/2010_ingest.py
+
+```
+
+3. Executing the script will upload 2 csv files (2010_1.csv and 2010_2.csv) into an S3 Bucket
+
+## Ingesting Data for 2020
+Script Location: Ingest_Data/2020_ingest.py
+
+2020_ingest.py showcases a different ingestion process from 2000/2010. The script incorporates a web-scraper functionality and processes the deletion of individual zip files after extraction. Also dynamic path creation negates the need for the user to manually insert a directory.
+
+From root level:
+```
+python Ingest_Data/2020_ingest.py
+```
 
 
-# Data Injestion Application for 2010
-1. 
+## Data Analysis
+
+### Goals
+1. Placeholder goal
+### Steps Below
+* [Table of content item placeholder](#placeholder-link)
+
+
+
+
+
