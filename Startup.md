@@ -1,14 +1,15 @@
 # Running the Program:
 
 ## Table of Contents
-* [Scraping Zip Files From URL](#Web Crawler Script for US Census Redistricting Data 2000/2010)
+* [Scraping Zip Files From URL](#web crawler python script for 2000/2010)
 * [Ingesting 2000 Data](#technologies-used)
 * [Ingesting 2010 Data](#features)
 * [Injesting 2020 Data](#screenshots)
 
-## Web Crawler Script for US Census Redistricting Data 2000/2010
+## Web Crawler Python Script for US Census Redistricting Data 2000/2010
 
-Ingest_Data/main.py
+Location: Ingest_Data/main.py
+
 ```
  --change url depending on the year:
  ---2000: https://www2.census.gov/census_2000/datasets/redistricting_file--pl_94-171/
@@ -20,10 +21,19 @@ os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r -
 ```
 1. Navigate to the directory where zip files should be placed
 2. Run python3/python [path_to_repo_on_local_machine]/Ingest_Data/main.py
-3. The script will download every .zip file on the webpage
+3. The script will download every .zip file on the webpage onto the current directory
 
 example:
 
+Ubuntu Terminal (Also works on Powershell/Mac)
+```
+mkdir 2010_zipfiles
+cd 2010_zipfiles
+python3 /path/to/localmachine/repo/Ingest_Data/main.py
+ls
+
 ![alt text](documentation_screenshots/zip_files.png "zip files in ubuntu")
+```
+
 
 
