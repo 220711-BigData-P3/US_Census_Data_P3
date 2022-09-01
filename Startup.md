@@ -1,10 +1,23 @@
 # Running the Program:
 
-## Table of Contents
+## Data Injestion
+
+### Goals:
+    - Programmatically download/unzip all zip files from census website by decade (2000, 2010, 2020)
+    - Gather summary rows from each state to generate 2 csv files for each decade (The second file will house data under the "Over 18" category)
+    - Upload generated csv files into a AWS S3 Bucket
+### Steps Below:
 * [Scraping Zip Files From URL](#web-crawler-python-script-for-US-Census-Redistricting-Data-2000/2010)
-* [Ingesting 2000 Data](#technologies-used)
+* [Ingesting 2000 Data](#ingesting-data-for-the-year-2000)
 * [Ingesting 2010 Data](#features)
 * [Injesting 2020 Data](#screenshots)
+
+## Data Analysis
+
+### Goals:
+    - Placeholder goal
+### Steps Below: 
+* [Table of content item placeholder](#placeholder-link)
 
 ## Web Crawler Python Script for US Census Redistricting Data 2000/2010
 
@@ -31,6 +44,11 @@ python3 /path/to/localmachine/repo/Ingest_Data/main.py
 ls
 ```
 ![alt text](documentation_screenshots/zip_files.png "zip files in ubuntu")
+
+## Ingesting Data for the year 2000
+
+
+
 
 
 
