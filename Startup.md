@@ -1,7 +1,7 @@
 # Running the Program:
 
 ## Table of Contents
-* [Scraping Zip Files From URL](#web crawler python script for 2000/2010)
+* [Scraping Zip Files From URL](#web-crawler-python-script-for-US-Census-Redistricting-Data-2000/2010)
 * [Ingesting 2000 Data](#technologies-used)
 * [Ingesting 2010 Data](#features)
 * [Injesting 2020 Data](#screenshots)
