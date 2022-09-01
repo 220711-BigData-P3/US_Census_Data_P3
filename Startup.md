@@ -16,13 +16,6 @@ pip install boto3
 * [Ingesting 2010 Data](#ingesting-data-for-2010)
 * [Injesting 2020 Data](#ingesting-data-for-2020)
 
-## Data Analysis
-
-### Goals
-1. Placeholder goal
-### Steps Below
-* [Table of content item placeholder](#placeholder-link)
-
 ## Web Crawler Python Script for US Census Redistricting Data 2000/2010
 
 Location: Ingest_Data/main.py
@@ -73,9 +66,16 @@ From root level:
 python Ingest_Data/2010_unzip_write.py
 ```
 
-3. Executing the script will result in 2 csv files (2010_1.csv and 2010_2.csv) to be uploaded into the S3 Bucket.
+3. Executing the script will result in 2 csv files (2010_1.csv and 2010_2.csv) to be uploaded into the S3 Bucket
 
 ## Ingesting Data for 2020
+
+## Data Analysis
+
+### Goals
+1. Placeholder goal
+### Steps Below
+* [Table of content item placeholder](#placeholder-link)
 
 
 
