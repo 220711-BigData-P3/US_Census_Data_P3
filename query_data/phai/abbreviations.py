@@ -51,25 +51,25 @@ def getstates():
         "wv",
         "wy",
     ]
-    #US, DC, PR, are not states
+    # US, DC, PR, are not states
     return state_abbrevs
+
+
 def getnortheast():
-    northeast = ["ct", "de" "ma", "me", "nh", "nj", "ny", "pa", "ri", "vt"]
+    northeast = ["CT", "DE", "MA", "ME", "NH", "NJ", "NY", "PA", "RI", "VT"]
     return northeast
+
+
 def getsouthwest():
-    southwest = ["az", "ca", "co", "nv", "nm", "ok", "tx", "ut"]
+    southwest = ["AZ", "CA", "CO", "NV", "NM", "OK", "TX", "UT"]
     return southwest
+
+
 def getwest():
-    west = [
-        "ak",
-        "id",
-        "mt",
-        "wy",
-        "wa",
-        "or",
-        "hi"
-    ]
+    west = ["AK", "ID", "MT", "WY", "WA", "OR", "HI"]
     return west
+
+
 def getsoutheast():
     southeast = [
         "AL",
@@ -84,9 +84,11 @@ def getsoutheast():
         "SC",
         "TN",
         "VA",
-        "WV"
+        "WV",
     ]
     return southeast
+
+
 def getmidwest():
     midwest = ["IA", "KS", "MO", "NE", "ND", "SD", "IL", "IN", "MI", "MN", "OH", "WI"]
     return midwest
