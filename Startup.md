@@ -66,7 +66,7 @@ From root level:
 python Ingest_Data/2010_unzip_write.py
 ```
 
-3. Executing the script will result in 2 csv files (2010_1.csv and 2010_2.csv) to be uploaded into the S3 Bucket
+3. Executing the script will upload 2 csv files (2010_1.csv and 2010_2.csv) into an S3 Bucket
 
 ## Ingesting Data for 2020
 
