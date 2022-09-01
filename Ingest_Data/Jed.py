@@ -4,6 +4,7 @@ import wget as wg
 import os as oss
 import zipfile as zp
 import shutil
+import upload_s3
 
 spark=SparkSession.builder\
     .master("local")\
@@ -136,6 +137,8 @@ def extract_info_GEO(inval,MyGlobalString):
 def Write_My_File(input_string, Output_file_Name):
     with open(Output_file_Name,'w')as w:
         w.write(input_string)
+    
+    
 
 def main():
     MyGlobalString_1=My_Gloabl_Header_P1
@@ -215,6 +218,16 @@ def main():
         Write_My_File(MyGlobalString_1,My_Out_Put_P1)
         Write_My_File(MyGlobalString_2,My_Out_Put_P2)
         Write_My_File(MyGlobalString_GEO,My_Out_Put_GEO)
+        
+    #Upload Generated Files into S3 Bucket
+    upload_s3.upload_file_s3(My_Out_Put_P1)
+    upload_s3.upload_file_s3(My_Out_Put_P2)
+    upload_s3.upload_file_s3(My_Out_Put_GEO)
+    
+    #Remove Generated Files from Local FS
+    oss.remove(My_Out_Put_P1)
+    oss.remove(My_Out_Put_P2)
+    oss.remove(My_Out_Put_GEO)
 
 
     print('extractioncompleted')
