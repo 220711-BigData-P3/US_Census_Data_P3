@@ -13,14 +13,25 @@ Analyzation of US redistricting data for the years 2000, 2010 and 2020
 
 
 ## General Information
-- The goal of this project is to demonstrate proficiency in data ingestion and the construction of efficent queries to gather insight.
-- Implemented MVC (Model-View-Controller) architectural pattern for clear, logical separation of tasks
+- The goal of this project is to gather insights and aggregates from redistricting data provided by the [US Census website](https://www.census.gov/data.html). This was achieved with the following steps: 
+    1. Programmatically scrape all relevant data files from 3 (one for each decade from 2000) webpages
+    2. Unzip and remodel data to include only necessary information
+    3. Upload new data files into AWS S3 cloud storage
+    4. Gather the following insights by querying/aggregating data from S3
+        * Which region is the most densely populated?
+        * What are the populations for different race/ethnicities present in the United States?
+        * Total population of the United States in the given years
+        * Which regions are growing the fastest?
+        * Which states have the highest rate of growth?
+        * Are any states decreasing in population?
+
 <!-- - Why did you undertake it? -->
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 
 ## Technologies Used
 - Python - 3.10.5
+- AWS S3
 - pySpark
 
 
@@ -37,18 +48,15 @@ To run the program, clone or copy project folder onto local machine. Then:
 
 Installing packages:
 ```
-Installed packages here
-
-```
-To execute program:
-
-```
-Steps to run program
+pip install boto3
+pip install python-dotenv
 
 ```
 
-## Usage
-Useful examples of how the the program can be used. Screenshots, demos, gifs, etc.
+## Screenshots
+1. wget command
+2. unzipping, extracting, upload process
+3. examples of queries (3?)
 
 
 <!-- ## Usage
