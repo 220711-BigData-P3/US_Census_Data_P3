@@ -62,14 +62,14 @@ pip install zipfile
 ```
 os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 https://www2.census.gov/census_2000/datasets/redistricting_file_--p1_94-171/')
 ```
-```wget``` is the optimal way to download files recursively on a webpage, bypassing all html elements and text. Explanation of options below:
+```wget``` is the optimal way to download files recursively on a webpage, bypassing all html elements and text.
     
-     ```--no directories``` keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory. 
-     ```--content-disposition``` uses the server's suggested name for file naming as opposed to using the tail end of the URL.
-     ```-A.zip``` only allows .zip files to be downloaded
-     ```-r``` downloads recursively
-     ```no-parent``` restricts retrieval of links that refer to a hierarchy above the current directory
-     ``` -l 3``` restricts directory depth of files to be downloaded 
+```--no directories``` keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory. 
+ ```--content-disposition``` uses the server's suggested name for file naming as opposed to using the tail end of the URL.
+```-A.zip``` only allows .zip files to be downloaded
+```-r``` downloads recursively
+```no-parent``` restricts retrieval of links that refer to a hierarchy above the current directory
+ ``` -l 3``` restricts directory depth of files to be downloaded 
 
 #### Unzipping, Extracting and Uploading Files to S3
 
