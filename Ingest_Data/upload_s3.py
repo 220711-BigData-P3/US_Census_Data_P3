@@ -18,9 +18,8 @@ def upload_file_s3(file_name, object_name=None):
     )
 
     client = session.client('s3')
-    print("Inside imported module function: upload")
-    """Upload a file to an S3 bucket
-
+    """
+    Upload a file to an S3 bucket
     :param file_name: File to upload
     :param bucket: Bucket to upload to
     :param object_name: S3 object name. If not specified then file_name is used

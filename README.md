@@ -13,7 +13,7 @@ Analyzation of US redistricting data for the years 2000, 2010 and 2020
 
 
 ## General Information
-- The goal of this project is to gather insights and aggregates from redistricting data provided by the [US Census website](https://www.census.gov/data.html). This was achieved with the following steps: 
+The goal of this project is to gather insights and aggregates from redistricting data provided by the [US Census website](https://www.census.gov/data.html). This was achieved with the following steps: 
 
     1. Programmatically scrape all relevant data files from 3 (one for each decade from 2000) webpages
     2. Unzip and remodel data to include only necessary information
@@ -52,12 +52,47 @@ Installing packages:
 ```
 pip install boto3
 pip install python-dotenv
+pip install zipfile
 
 ```
 
-## Screenshots
-1. wget command
-2. unzipping, extracting, upload process
+## Usage
+
+#### Web Scraping for Downloading Zip Files
+```
+os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 https://www2.census.gov/census_2000/datasets/redistricting_file_--p1_94-171/')
+```
+```wget``` is the optimal way to download files recursively on a webpage, bypassing all html elements and text. Explanation of options below:
+    
+    * ```--no directories``` keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory. 
+    * ```--content-disposition``` uses the server's suggested name for file naming as opposed to using the tail end of the URL.
+    * ```-A.zip``` only allows .zip files to be downloaded
+    * ```-r``` downloads recursively
+    * ```no-parent``` restricts retrieval of links that refer to a hierarchy above the current directory
+    * ``` -l 3``` restricts directory depth of files to be downloaded 
+
+#### Unzipping, Extracting and Uploading Files to S3
+
+```zipfile``` allows for the quick unzipping of zip files in python. The package was used to unzip every zip file downloaded from the ```wget``` command, while providing access to the ```namelist()``` function which returns to us an iterable datatype containing the names of files in a .zip. Then the ```.open``` function was used iteratively to access these files, followed by writing the needed data into a csv file. 
+
+```
+    for filename in sorted(os.listdir(directory)):
+        if "usa" in filename:
+            pass
+        elif "00001" in filename:
+            f = os.path.join(directory, filename)
+            root =  zipfile.ZipFile(f, "r")
+            for name in root.namelist():
+                print(name)
+                with open(fname1, "a") as y:
+                    y.write(root.open(name).readline().decode("utf-8"))
+                root.close()
+```
+
+After writing the necessary data into a csv file, the ```boto3``` package was implemented to access AWS S3 storage. An instance of boto3's ```Session``` class provides authentication and connectivity to a specific S3 bucket (client, resource). To upload a csv file, ```upload_file()``` was used.
+
+![alt text](documentation_screenshots/boto3_S3.png "boto3 in action")
+
 3. examples of queries (3?)
 
 
