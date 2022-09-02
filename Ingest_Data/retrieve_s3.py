@@ -19,11 +19,20 @@ resource = session.resource('s3')
 client = session.client('s3')
 
 
-#fetch
+#fetch bucket from resource
 bucket = resource.Bucket(bucket_name)
-#print
-#Download file into local
-for item in bucket.objects.all():
-    print(item.key)
-    with open(item.key, 'wb') as f:
-        client.download_fileobj(item.bucket_name, item.key, f)
+
+def download_from_s3(bucket):
+    #Download file into local
+    for item in bucket.objects.all():
+        print(item.key)
+        with open(item.key, 'wb') as f:
+            client.download_fileobj(item.bucket_name, item.key, f)
+            
+def check_bucket_contents(bucket):
+    for item in bucket.objects.all():
+        print(item.key)
+        
+
+#check_bucket_contents(bucket)
+#download_from_s3(bucket)
