@@ -91,7 +91,7 @@ os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r -
 
 After writing the necessary data into a csv file, the ```boto3``` package was implemented to access AWS S3 storage. An instance of boto3's ```Session``` class provides authentication and connectivity to a specific S3 bucket (client, resource). To upload a csv file, ```upload_file()``` was used.
 
-![alt text](documentation_screenshots/S3_boto3.png "boto3 in action")
+![alt text](documentation_screenshots/S3_boto3.png =500x300 "boto3 in action")
 
 3. examples of queries (3?)
 
