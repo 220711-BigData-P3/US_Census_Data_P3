@@ -64,12 +64,12 @@ os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r -
 ```
 ```wget``` is the optimal way to download files recursively on a webpage, bypassing all html elements and text. Explanation of options below:
     
-    * ```--no directories``` keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory. 
-    * ```--content-disposition``` uses the server's suggested name for file naming as opposed to using the tail end of the URL.
-    * ```-A.zip``` only allows .zip files to be downloaded
-    * ```-r``` downloads recursively
-    * ```no-parent``` restricts retrieval of links that refer to a hierarchy above the current directory
-    * ``` -l 3``` restricts directory depth of files to be downloaded 
+     ```--no directories``` keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory. 
+     ```--content-disposition``` uses the server's suggested name for file naming as opposed to using the tail end of the URL.
+     ```-A.zip``` only allows .zip files to be downloaded
+     ```-r``` downloads recursively
+     ```no-parent``` restricts retrieval of links that refer to a hierarchy above the current directory
+     ``` -l 3``` restricts directory depth of files to be downloaded 
 
 #### Unzipping, Extracting and Uploading Files to S3
 
@@ -91,7 +91,7 @@ os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r -
 
 After writing the necessary data into a csv file, the ```boto3``` package was implemented to access AWS S3 storage. An instance of boto3's ```Session``` class provides authentication and connectivity to a specific S3 bucket (client, resource). To upload a csv file, ```upload_file()``` was used.
 
-![alt text](documentation_screenshots/boto3_S3.png "boto3 in action")
+![alt text](documentation_screenshots/S3_boto3.png "boto3 in action")
 
 3. examples of queries (3?)
 
