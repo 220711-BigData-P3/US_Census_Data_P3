@@ -1,4 +1,7 @@
+import boto3
 import os
+from botocore.exceptions import ClientError
+from dotenv import load_dotenv
 
 '''
 wget webcrawler command for files:
@@ -29,6 +32,28 @@ def url_scrape(directory):
         
        
     return True
+
+def unzip_and_upload(directory, year):
+    header_files = {
+        "2000_pl1_header_file": '../2000-1Header.csv',
+        "2000_pl2_header_file": '../2000-2Header.csv',
+        "2010_pl1_header_file": '../2010-1Header.csv',
+        "2010_pl1_header_file": '../2010-2Header.csv',
+        "2020_pl1_header_file": '../2020-1Header.csv',
+        "2020_pl2_header_file": '../2020-2Header.csv'
+    }
+    
+    headers= []
+    
+    for header_path in header_files.values():
+        if header_path
+    
+    
+    
+    
+    
+    
+    
         
 def main():
     print("directory:")
