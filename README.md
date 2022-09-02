@@ -75,7 +75,7 @@ os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r -
 
 ```zipfile``` allows for the quick unzipping of zip files in python. The package was used to unzip every zip file downloaded from the ```wget``` command, while providing access to the ```namelist()``` function which returns to us an iterable datatype containing the names of files in a .zip. Then the ```.open``` function was used iteratively to access these files, followed by writing the needed data into a csv file. 
 
-```
+```python
     for filename in sorted(os.listdir(directory)):
         if "usa" in filename:
             pass
@@ -91,7 +91,42 @@ os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r -
 
 After writing the necessary data into a csv file, the ```boto3``` package was implemented to access AWS S3 storage. An instance of boto3's ```Session``` class provides authentication and connectivity to a specific S3 bucket (client, resource). To upload a csv file, ```upload_file()``` was used.
 
-![alt text](documentation_screenshots/S3_boto3.png =500x300 "boto3 in action")
+```python
+    def upload_file_s3(file_name, object_name=None):
+        load_dotenv()
+
+        access_key = os.getenv("ACCESS_KEY_ID")
+        secret_access_key = os.getenv("SECRET_ACCESS_KEY")
+        bucket_name = os.getenv("BUCKET_NAME")
+        region_name = os.getenv("REGION_NAME")
+
+        session = boto3.Session(
+            aws_access_key_id = access_key,
+            aws_secret_access_key = secret_access_key,
+            region_name = region_name
+        )
+
+        client = session.client('s3')
+        """
+        Upload a file to an S3 bucket
+        :param file_name: File to upload
+        :param bucket: Bucket to upload to
+        :param object_name: S3 object name. If not specified then file_name is used
+        :return: True if file was uploaded, else False
+        """
+
+        # If S3 object_name was not specified, use file_name
+        if object_name is None:
+            object_name = os.path.basename(file_name)
+
+        # Upload the file
+        try:
+            response = client.upload_file(file_name, bucket_name, object_name)
+        except ClientError as e:
+            print(e)
+            return False
+        return True
+```
 
 3. examples of queries (3?)
 
