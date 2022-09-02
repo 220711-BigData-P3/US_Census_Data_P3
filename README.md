@@ -13,7 +13,7 @@ Analyzation of US redistricting data for the years 2000, 2010 and 2020
 
 
 ## General Information
-The goal of this project is to gather insights and aggregates from redistricting data provided by the [US Census website](https://www.census.gov/data.html). This was achieved with the following steps: 
+The goal of this project is to gather insights and aggregates from redistricting data provided by the [US Census website](https://www.census.gov/data.html). This was achieved with the following steps.
 
     1. Programmatically scrape all relevant data files from 3 (one for each decade from 2000) webpages
     2. Unzip and remodel data to include only necessary information
