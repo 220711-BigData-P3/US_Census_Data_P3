@@ -1,13 +1,27 @@
-'''
-HLO: This program reads census data directly from zip files and joins relevant
-lines together in two csv documents. The documents are deleted from local storage
-after they are uploaded to AWS S3. No zip files are extracted during runtime and
-no new files created by this program remain on local storage afterwards.
+"""
+HLO:
+    This program reads year-2000 redistricting census data from zip files and creates
+    two new csv documents, '2000_1.csv' and '2000_2.csv.' If these files already exist,
+    there is no need to run this program again.
+
+    If upload_to_AWS = True, the two csv files will be uploaded to AWS S3 and deleted
+    from local storage afterwards.
+    If upload_to_AWS = False, the two .csv files will be saved to the cwd.
+    The default setting is False. No zip files are extracted during runtime regardless
+    of this choice.
 
 Instructions:
-    1. set the zip_directory to the location of the census .zip files on local storage
-    2. run program.
-'''
+    1. Set the 'zip_directory' variable to the location of the year-2000 .zip files
+       on local storage. If this has not been done already, first follow the
+       instructions for running 'web-scraper.py'.
+    
+    2. Keep the variable 'upload_to_AWS' set to 'False' if you want the generated
+       .csv files to be saved to your local working directory.
+       Set it to 'True' if you want to upload the files to an AWS S3 bucket instad
+       (follow the instructions for running 'upload_s3.py').
+    
+    3. Run this program.
+"""
 
 
 import zipfile
@@ -26,6 +40,16 @@ def main():
     zip_directory = '../2000/'
     # zip_directory = '//wsl$/Ubuntu/home/benjaminserio/P3_Census/'
     # iterate over files in that directory
+
+    ############################################################################
+    #                                                                          #
+    #   upload_to_AWS = True:   Save generated csv files to cwd.               #
+    #   upload_to_AWS = False:  Upload generated csv files to AWS S3 and       #
+    #                           delete them locally afterwards.                #
+    #                                                                          #
+    ############################################################################
+    upload_to_AWS = False
+
     with open(fname1, "w") as f1:
         with open("2000-1Header.csv", "r") as header_01:
             f1.write(header_01.readline())
@@ -55,11 +79,12 @@ def main():
                     f2.write(root.open(name).readline().decode("utf-8"))
                 root.close()
 
-    upload_s3.upload_file_s3(fname1)
-    os.remove(fname1)
-    
-    upload_s3.upload_file_s3(fname2)
-    os.remove(fname2)
+    if upload_to_AWS == True:
+        upload_s3.upload_file_s3(fname1)
+        os.remove(fname1)
+        
+        upload_s3.upload_file_s3(fname2)
+        os.remove(fname2)
 
 if __name__ == "__main__":
     main()
