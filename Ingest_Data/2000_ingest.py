@@ -17,8 +17,8 @@ Instructions:
     
     2. Keep the variable 'upload_to_AWS' set to 'False' if you want the generated
        .csv files to be saved to your local working directory.
-       Set it to 'True' if you want to upload the files to an AWS S3 bucket instad
-       (follow the instructions for running 'upload_s3.py').
+       Set it to 'True' if you want to upload the files to an AWS S3 bucket instead (and
+       follow the instructions for running 'upload_s3.py' before running this program).
     
     3. Run this program.
 """
