@@ -3,6 +3,9 @@ from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, to_str, substring, lit
 from pyspark.sql.types import StringType
+import pandas
+import matplotlib.pyplot as plt
+
 
 spark = SparkSession.builder.master("local").appName("data").getOrCreate()
 sc = SparkContext.getOrCreate()
@@ -368,4 +371,42 @@ for i in range(len(all_regions_2020.collect())):
 file.write(f"max,{highest_pop_2010.collect()[0]['region']}")
 file.close()
 '''
+
+
+#                                                                                                                                          
+#                                                                                                                                          
+#          GGGGGGGGGGGGGRRRRRRRRRRRRRRRRR                  AAA               PPPPPPPPPPPPPPPPP   HHHHHHHHH     HHHHHHHHH   SSSSSSSSSSSSSSS 
+#       GGG::::::::::::GR::::::::::::::::R                A:::A              P::::::::::::::::P  H:::::::H     H:::::::H SS:::::::::::::::S
+#     GG:::::::::::::::GR::::::RRRRRR:::::R              A:::::A             P::::::PPPPPP:::::P H:::::::H     H:::::::HS:::::SSSSSS::::::S
+#    G:::::GGGGGGGG::::GRR:::::R     R:::::R            A:::::::A            PP:::::P     P:::::PHH::::::H     H::::::HHS:::::S     SSSSSSS
+#   G:::::G       GGGGGG  R::::R     R:::::R           A:::::::::A             P::::P     P:::::P  H:::::H     H:::::H  S:::::S            
+#  G:::::G                R::::R     R:::::R          A:::::A:::::A            P::::P     P:::::P  H:::::H     H:::::H  S:::::S            
+#  G:::::G                R::::RRRRRR:::::R          A:::::A A:::::A           P::::PPPPPP:::::P   H::::::HHHHH::::::H   S::::SSSS         
+#  G:::::G    GGGGGGGGGG  R:::::::::::::RR          A:::::A   A:::::A          P:::::::::::::PP    H:::::::::::::::::H    SS::::::SSSSS    
+#  G:::::G    G::::::::G  R::::RRRRRR:::::R        A:::::A     A:::::A         P::::PPPPPPPPP      H:::::::::::::::::H      SSS::::::::SS  
+#  G:::::G    GGGGG::::G  R::::R     R:::::R      A:::::AAAAAAAAA:::::A        P::::P              H::::::HHHHH::::::H         SSSSSS::::S 
+#  G:::::G        G::::G  R::::R     R:::::R     A:::::::::::::::::::::A       P::::P              H:::::H     H:::::H              S:::::S
+#   G:::::G       G::::G  R::::R     R:::::R    A:::::AAAAAAAAAAAAA:::::A      P::::P              H:::::H     H:::::H              S:::::S
+#    G:::::GGGGGGGG::::GRR:::::R     R:::::R   A:::::A             A:::::A   PP::::::PP          HH::::::H     H::::::HHSSSSSSS     S:::::S
+#     GG:::::::::::::::GR::::::R     R:::::R  A:::::A               A:::::A  P::::::::P          H:::::::H     H:::::::HS::::::SSSSSS:::::S
+#       GGG::::::GGG:::GR::::::R     R:::::R A:::::A                 A:::::A P::::::::P          H:::::::H     H:::::::HS:::::::::::::::SS 
+#          GGGGGG   GGGGRRRRRRRR     RRRRRRRAAAAAAA                   AAAAAAAPPPPPPPPPP          HHHHHHHHH     HHHHHHHHH SSSSSSSSSSSSSSS   
+#                                                                                                                                          
+#                                                                                                                                          
+#                                                                                                                                          
+#                                                                                                                                          
+#                                                                                                                                          
+#                                                                                                                                          
+#                                                                                                                                          
+
+df = all_regions_2000.toPandas()
+graph1 = df.plot.bar(x='region', y='total_population')
+fig = plt.figure()
+plt.plot(1, 3)
+plt.plot(4,3)
+fig.savefig("output.png")
+plt.show()
+# graph1 = df.plot(df.get('region'), kind = "bar", legend = None)
+# graph1.set_xlabel("Region")
+# graph1.set_ylabel("Population")
 spark.stop()
