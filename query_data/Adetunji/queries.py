@@ -9,6 +9,7 @@ spark = SparkSession.builder \
 sc = spark.sparkContext
 sc.setLogLevel("WARN")
 
+# path = 'file:/home/strumunix/Rev-P3/US_Census_Data_P3/query_data/Adetunji/'
 path = "file:/mnt/c/Users/mofob/OneDrive/Desktop/Adetunji/"
 
 #######READ 2000 CENSUS  DATA LOAD ###########
@@ -54,8 +55,8 @@ census2020_2 = spark.read \
 
 census2020_1.createTempView("census2020_1")
 census2020_2.createTempView("census2020_2")
-
-"""print("2000")
+'''
+print("2000")
 census2000_1.printSchema()
 census2000_2.printSchema()
 print("2010")
@@ -64,7 +65,7 @@ census2010_2.printSchema()
 print("2020")
 census2020_1.printSchema()
 census2020_2.printSchema()
-"""
+'''
 
 #########>>>>>>>>>>QUERIES <<<<<<<<<<<<<<<<#########
 
@@ -75,12 +76,12 @@ GROWTH2020TO2010 = spark.sql("SELECT census2020_1.STUSAB as STATE , census2020_1
         join census2010_1 on census2010_1.STUSAB = census2020_1.STUSAB  order by Percentage_change DESC")
 
 #Population Increase 2020 to 2010
-Pop_Incr_2020_to_2010 = GROWTH2020TO2010.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2020-2010)",func.round("Percentage_change",2))\
-    .select(["STATE","Pop_Growth_Rate(2020-2010)" ])
+Pop_Incr_2020_to_2010 = GROWTH2020TO2010.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2010-2020)",func.round("Percentage_change",2))\
+    .select(["STATE","Pop_Growth_Rate(2010-2020)" ])
 
 #Population Decrease 2020 to 2010
-Pop_Decr_2020_to_2010 = GROWTH2020TO2010.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2020-2010)",func.round("Percentage_change",2))\
-    .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2020-2010)" ])
+Pop_Decr_2020_to_2010 = GROWTH2020TO2010.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2010-2020)",func.round("Percentage_change",2))\
+    .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2010-2020)" ])
 
 
 #POPULATION DATA 2010 TO 2000
@@ -90,12 +91,12 @@ GROWTH2010TO2000 = spark.sql("SELECT census2010_1.STUSAB as STATE , census2010_1
         join census2000_1 on census2010_1.STUSAB = census2000_1.STUSAB order by Percentage_change DESC")
 
 #Population Increase 2010 to 2000
-Pop_Incr_2010_to_2000 = GROWTH2010TO2000.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2010-2000)",func.round("Percentage_change",2))\
-    .select(["STATE","Pop_Growth_Rate(2010-2000)" ])
+Pop_Incr_2010_to_2000 = GROWTH2010TO2000.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2000-2010)",func.round("Percentage_change",2))\
+    .select(["STATE","Pop_Growth_Rate(2000-2010)" ])
 
 #Population Decrease 2010 to 2000
-Pop_Decr_2010_to_2000 =GROWTH2010TO2000.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2010-2000)",func.round("Percentage_change",2)) \
-    .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2010-2000)" ])
+Pop_Decr_2010_to_2000 =GROWTH2010TO2000.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2000-2010)",func.round("Percentage_change",2)) \
+    .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2000-2010)" ])
 
 
 #POPULATION DATA 2020 TO 2000
@@ -105,15 +106,15 @@ GROWTH2020TO2000 = spark.sql("SELECT census2020_1.STUSAB as STATE , census2020_1
         join census2000_1 on census2020_1.STUSAB = census2000_1.STUSAB order by Percentage_change DESC")
 
 #Population Increase 2020 to 2000
-Pop_Incr_2020_to_2000 = GROWTH2020TO2000.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2020-2000)",func.round("Percentage_change",2))\
-    .select(["state","Pop_Growth_Rate(2020-2000)"])
+Pop_Incr_2020_to_2000 = GROWTH2020TO2000.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2000-2020)",func.round("Percentage_change",2))\
+    .select(["state","Pop_Growth_Rate(2000-2020)"])
 
 #Population Decrease 2020 to 2000
-Pop_Decr_2020_to_2000 = GROWTH2020TO2000.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2020-2000)",func.round("Percentage_change",2)) \
-    .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2020-2000)" ])
+Pop_Decr_2020_to_2000 = GROWTH2020TO2000.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2000-2020)",func.round("Percentage_change",2)) \
+    .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2000-2020)" ])
 
 
-"""
+
 Pop_Incr_2020_to_2010.show()
 Pop_Decr_2020_to_2010.show()
 
@@ -122,13 +123,12 @@ Pop_Decr_2010_to_2000.show()
 
 Pop_Incr_2020_to_2000.show()
 Pop_Decr_2020_to_2000.show()
-"""
 
 
 
 #### WRITING THE DATA FRAME RESULTS TO FILE
 
-
+'''
 Pop_Incr_2020_to_2010.write.csv(path + "/Pop_Incr_2020_to_2010")
 Pop_Decr_2020_to_2010.write.csv(path + "/Pop_Decr_2020_to_2010")
 
@@ -137,6 +137,6 @@ Pop_Decr_2010_to_2000.write.csv(path + "/Pop_Decr_2010_to_2000")
 
 Pop_Incr_2020_to_2000.write.csv(path + "/Pop_Incr_2020_to_2000")
 Pop_Decr_2020_to_2000.write.csv(path + "/Pop_Decr_2020_to_2000")
-
+'''
 
 spark.stop()
