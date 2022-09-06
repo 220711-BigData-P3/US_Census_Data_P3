@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, lit, expr
 from pyspark.context import SparkContext
 import os
 
@@ -31,8 +31,9 @@ def get_tempViews():
     +---------+--------+-----------+
     '''
     for filename in filenames:
+        year = filename.split('_')[0]
         df_temp = (spark.read.option("header", True).csv(csv_path + filename))
-        df_temp = df_temp.filter(col("STUSAB").isin(*state_abbrevs))
+        df_temp = df_temp.withColumn("YEAR", lit(f"01/01/{year}")).filter(col("STUSAB").isin(*state_abbrevs))
         #extract name from filename (everything before '.')
         df_temp.createOrReplaceTempView(filename.split('.')[0])
 
@@ -40,35 +41,10 @@ def get_tempViews():
 #Create Views
 get_tempViews()
 
-#Join tables together by common column value (STUSAB)
-all_years = spark.sql("SELECT 2000_1.STUSAB AS STATE, 2000_1.P0010001 AS POP_2000, '2000' AS YEAR_2000, 2010_1.P0010001 AS POP_2010, '2010' AS YEAR_2010, 2020_P1.P0010001 AS POP_2020, '2020' AS YEAR_2020 FROM 2000_1 JOIN 2010_1 ON 2000_1.STUSAB = 2010_1.STUSAB JOIN 2020_P1 ON 2000_1.STUSAB = 2020_P1.STUSAB")
-
+all_years = spark.sql("SELECT 2000_1.STUSAB AS STATE, 2000_1.P0010001 AS POPULATION, YEAR FROM 2000_1 UNION SELECT 2010_1.STUSAB AS STATE, 2010_1.P0010001 AS POPULATION, YEAR FROM 2010_1 UNION SELECT 2020_P1.STUSAB AS STATE, 2020_P1.P0010001 AS POPULATION, YEAR FROM 2020_P1 ")
 print(all_years.count()) #50
 
-all_years.show()
-# +-----+--------+--------+--------+
-# |STATE|POP_2000|POP_2010|POP_2020|
-# +-----+--------+--------+--------+
-# |   AK|  626932|  710231|  733391|
-# |   AL| 4447100| 4779736| 5024279|
-# |   AR| 2673400| 2915918| 3011524|
-# |   AZ| 5130632| 6392017| 7151502|
-# |   CA|33871648|37253956|39538223|
-# |   CO| 4301261| 5029196| 5773714|
-# |   CT| 3405565| 3574097| 3605944|
-# |   DE|  783600|  897934|  989948|
-# |   FL|15982378|18801310|21538187|
-# |   GA| 8186453| 9687653|10711908|
-# |   HI| 1211537| 1360301| 1455271|
-# |   IA| 2926324| 3046355| 3190369|
-# |   ID| 1293953| 1567582| 1839106|
-# |   IL|12419293|12830632|12812508|
-# |   IN| 6080485| 6483802| 6785528|
-# |   KS| 2688418| 2853118| 2937880|
-# |   KY| 4041769| 4339367| 4505836|
-# |   LA| 4468976| 4533372| 4657757|
-# |   MA| 6349097| 6547629| 7029917|
-# |   MD| 5296486| 5773552| 6177224|
-# +-----+--------+--------+--------+
+all_years.show(150)
 
+#Run to get result csv file
 # all_years.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Martin/state_population_trendline")
