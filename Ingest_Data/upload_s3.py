@@ -3,21 +3,6 @@ import os
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-# load_dotenv()
-
-# access_key = os.getenv("ACCESS_KEY_ID")
-# secret_access_key = os.getenv("SECRET_ACCESS_KEY")
-# bucket_name = os.getenv("BUCKET_NAME")
-# region_name = os.getenv("REGION_NAME")
-
-# session = boto3.Session(
-#     aws_access_key_id = access_key,
-#     aws_secret_access_key = secret_access_key,
-#     region_name = region_name
-# )
-
-# client = session.client('s3')
-
 def upload_file_s3(file_name, object_name=None):
     load_dotenv()
 
@@ -33,9 +18,8 @@ def upload_file_s3(file_name, object_name=None):
     )
 
     client = session.client('s3')
-    print("Inside imported module function: upload")
-    """Upload a file to an S3 bucket
-
+    """
+    Upload a file to an S3 bucket
     :param file_name: File to upload
     :param bucket: Bucket to upload to
     :param object_name: S3 object name. If not specified then file_name is used
