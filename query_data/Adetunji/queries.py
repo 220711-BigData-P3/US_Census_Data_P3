@@ -69,11 +69,11 @@ census2020_2.printSchema()
 
 #########>>>>>>>>>>QUERIES <<<<<<<<<<<<<<<<#########
 
-#POPULATION DATA 2020 TO 2010
+#POPULATION DATA 2010 TO 2020
 GROWTH2010TO2020 = spark.sql("SELECT census2020_1.STUSAB as STATE , census2020_1.P0010001 as 2020_Population ,\
         census2010_1.P0010001 as 2010_Population , census2020_1.P0010001 - census2010_1.P0010001 as Difference ,\
         100 * (census2020_1.P0010001 - census2010_1.P0010001)/census2010_1.P0010001 as Percentage_change from census2020_1 \
-        join census2010_1 on census2010_1.STUSAB = census2020_1.STUSAB  order by Percentage_change DESC")
+        join census2010_1 on census2010_1.STUSAB = census2020_1.STUSAB WHERE census2020_1.STUSAB != 'US' and census2020_1.STUSAB != 'PR'   order by Percentage_change DESC")
 
 #Population Increase 2020 to 2010
 Pop_Incr_2010_to_2020 = GROWTH2010TO2020.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2010-2020)",func.round("Percentage_change",2))\
@@ -84,11 +84,11 @@ Pop_Decr_2010_to_2020 = GROWTH2010TO2020.filter(func.col("Percentage_change") < 
     .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2010-2020)" ])
 
 
-#POPULATION DATA 2010 TO 2000
+#POPULATION DATA 2000 TO 2010
 GROWTH2000TO2010 = spark.sql("SELECT census2010_1.STUSAB as STATE , census2010_1.P0010001 as 2010_Population ,\
         census2000_1.P0010001 as 2000_Population , census2010_1.P0010001 - census2000_1.P0010001 as Difference ,\
         100 * (census2010_1.P0010001 - census2000_1.P0010001)/census2000_1.P0010001 as Percentage_change from census2010_1 \
-        join census2000_1 on census2010_1.STUSAB = census2000_1.STUSAB order by Percentage_change DESC")
+        join census2000_1 on census2010_1.STUSAB = census2000_1.STUSAB WHERE census2010_1.STUSAB != 'US' and census2010_1.STUSAB != 'PR' order by Percentage_change DESC")
 
 #Population Increase 2010 to 2000
 Pop_Incr_2000_to_2010 = GROWTH2000TO2010.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2000-2010)",func.round("Percentage_change",2))\
@@ -99,11 +99,11 @@ Pop_Decr_2000_to_2010 =GROWTH2000TO2010.filter(func.col("Percentage_change") < 0
     .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2000-2010)" ])
 
 
-#POPULATION DATA 2020 TO 2000
+#POPULATION DATA 2000 TO 2020
 GROWTH2000TO2020 = spark.sql("SELECT census2020_1.STUSAB as STATE , census2020_1.P0010001 as 2020_Population ,\
         census2000_1.P0010001 as 2000_Population , census2020_1.P0010001 - census2000_1.P0010001 as Difference ,\
         100 * (census2020_1.P0010001 - census2000_1.P0010001)/census2000_1.P0010001 as Percentage_change from census2020_1 \
-        join census2000_1 on census2020_1.STUSAB = census2000_1.STUSAB order by Percentage_change DESC")
+        join census2000_1 on census2020_1.STUSAB = census2000_1.STUSAB  WHERE census2020_1.STUSAB != 'US' and census2020_1.STUSAB != 'PR' order by Percentage_change DESC")
 
 #Population Increase 2020 to 2000
 Pop_Incr_2000_to_2020 = GROWTH2000TO2020.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2000-2020)",func.round("Percentage_change",2))\
@@ -115,14 +115,14 @@ Pop_Decr_2000_to_2020 = GROWTH2000TO2020.filter(func.col("Percentage_change") < 
 
 
 
-"""Pop_Incr_2010_to_2020.show()
+Pop_Incr_2010_to_2020.show()
 Pop_Decr_2010_to_2020.show()
 
 Pop_Incr_2000_to_2010.show()
 Pop_Decr_2000_to_2010.show()
 
 Pop_Incr_2000_to_2020.show()
-Pop_Decr_2000_to_2020.show()"""
+Pop_Decr_2000_to_2020.show()
 
 
 

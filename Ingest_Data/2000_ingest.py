@@ -22,8 +22,6 @@ Instructions:
     
     3. Run this program.
 """
-
-
 import zipfile
 import upload_s3
 import os
