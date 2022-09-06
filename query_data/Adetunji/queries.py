@@ -113,8 +113,16 @@ Pop_Incr_2000_to_2020 = GROWTH2000TO2020.filter(func.col("Percentage_change") > 
 Pop_Decr_2000_to_2020 = GROWTH2000TO2020.filter(func.col("Percentage_change") < 0).withColumn("Pop_Reduction_Rate(2000-2020)",func.round("Percentage_change",2)) \
     .orderBy("Percentage_change").select(["STATE","Pop_Reduction_Rate(2000-2020)" ])
 
+Pop_Rate_2000_2020= GROWTH2000TO2020.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
+Pop_Rate_2000_2010=GROWTH2000TO2010.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
+Pop_Rate_2010_2020=GROWTH2010TO2020.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
 
+print("Population rate change through the decades ")
+Pop_Rate_2000_2020.show()
+Pop_Rate_2000_2010.show()
+Pop_Rate_2010_2020.show()
 
+print("Population increase and decrease through the decades ")
 Pop_Incr_2010_to_2020.show()
 Pop_Decr_2010_to_2020.show()
 
@@ -126,10 +134,10 @@ Pop_Decr_2000_to_2020.show()
 
 
 
-#### WRITING THE DATA FRAME RESULTS TO FILE
+#### WRITING THE DATA FRAME RESULTS TO FILE FOR POPULATION INCREASE AND DECREASE
 
 
-Pop_Incr_2010_to_2020.write.csv(path + "/Pop_Incr_2010_to_2020")
+"""Pop_Incr_2010_to_2020.write.csv(path + "/Pop_Incr_2010_to_2020")
 Pop_Decr_2010_to_2020.write.csv(path + "/Pop_Decr_2010_to_2020")
 
 Pop_Incr_2000_to_2010.write.csv(path + "/Pop_Incr_2000_to_2010")
@@ -137,6 +145,11 @@ Pop_Decr_2000_to_2010.write.csv(path + "/Pop_Decr_2000_to_2010")
 
 Pop_Incr_2000_to_2020.write.csv(path + "/Pop_Incr_2000_to_2020")
 Pop_Decr_2000_to_2020.write.csv(path + "/Pop_Decr_2000_to_2020")
+"""
+#### WRITING THE DATA FRAME RESULTS TO FILE FOR POPULATION RATE CHANGE
 
+"""Pop_Rate_2000_2020.write.csv(path + "/Total_Pop_Rate_2000_to_2020")
+Pop_Rate_2000_2010.write.csv(path + "/Total_Pop_Rate_2000_to_2010")
+Pop_Rate_2010_2020.write.csv(path + "/Total_Pop_Rate_2010_to_2020")"""
 
 spark.stop()
