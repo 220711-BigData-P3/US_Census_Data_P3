@@ -1,8 +1,8 @@
 # Running the Program:
 This project is split into 2 main parts: Data Ingestion and Data Analysis.
 
-* [Data Ingest](#data-Ingestion)
-* [Data Analysis](#data-analysis)
+*   [Data Ingest](#data-Ingestion)
+*   [Data Analysis](#data-analysis)
 
 ## Data Injestion
 Packages needed:
@@ -11,9 +11,9 @@ pip install python-dotenv
 pip install boto3
 ```
 ### Goals
-1. Programmatically download/unzip all zip files from census website urls by decade (2000, 2010, 2020)
-2. Gather summary rows from each state to generate 2 csv files for each decade (The second file will house data under the "Over 18" category)
-3. Upload generated csv files into a AWS S3 Bucket (Credentials should be in a .env file inside the root level of repo.)
+1.  Programmatically download/unzip all zip files from census website urls by decade (2000, 2010, 2020)
+2.  Gather summary rows from each state to generate 2 csv files for each decade (The second file will house data under the "Over 18" category)
+3.  Upload generated csv files into a AWS S3 Bucket (Credentials should be in a .env file inside the root level of repo.)
     * Environment variable names: *ACCESS_KEY_ID, SECRET_ACCESS_KEY, BUCKET_NAME, REGION_NAME*
 
 ### Steps
@@ -34,9 +34,9 @@ Location: Ingest_Data/web-scraper.py
 
 os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 [url]')
 ```
-1. Navigate to the directory where zip files should be placed
-2. Run python3/python [path_to_repo_on_local_machine]/Ingest_Data/web-scraper.py
-3. The script will download every .zip file on the webpage onto the current directory
+1.  Navigate to the directory where zip files should be placed
+2.  Run python3/python [path_to_repo_on_local_machine]/Ingest_Data/web-scraper.py
+3.  The script will download every .zip file on the webpage onto the current directory
 
 Example:
 
@@ -48,9 +48,33 @@ ls
 ```
 ![alt text](documentation_screenshots/zip_files.png "zip files in ubuntu")
 
-## Ingesting Data for 2000/2010
+## Ingesting Data for 2000
 
 2000 Script Location: Ingest_Data/2000_ingest.py
+
+1.  Set ```zip_directory ``` to reference the directory containing the zip files for 2000.
+
+```
+def main():
+    zip_directory = '[path_to_zip_files_directory]'
+```
+
+2.  This program saves the two resulting .csv files to the current working directory (cwd)
+    by default. If you need to upload these files to AWS S3 storage instead, change the
+    variable ```upload_to_AWS``` to ```True```.
+
+3.  Execute the python script
+
+    From root level:
+    ```
+    python Ingest_Data/2000_ingest.py
+
+    ```
+
+3.  Executing the script will upload two .csv files (2000_1.csv and 2000_2.csv) to the cwd
+    if ```upload_to_AWS``` is  ```False``` or into an S3 Bucket if it is ```True```.
+
+## Ingesting Data for 2010
 
 2010 Script Location: Ingest_Data/2010_ingest.py
 
@@ -65,15 +89,12 @@ def main():
 
 From root level:
 ```
-python Ingest_Data/2000_ingest.py
-
-and/or 
 
 python Ingest_Data/2010_ingest.py
 
 ```
 
-3. Executing the script will upload 2 csv files (2010_1.csv and 2010_2.csv) into an S3 Bucket
+3. Executing the script will upload two .csv files (2010_1.csv and 2010_2.csv) into an S3 Bucket
 
 ## Ingesting Data for 2020
 Script Location: Ingest_Data/2020_ingest.py
