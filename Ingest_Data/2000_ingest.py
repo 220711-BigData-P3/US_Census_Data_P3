@@ -26,7 +26,6 @@ Instructions:
 
 import zipfile
 import upload_s3
-# import required module
 import os
 
 def main():  
