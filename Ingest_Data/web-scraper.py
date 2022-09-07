@@ -18,17 +18,19 @@ Details:
 
     We scrape them by including modifiers that specify our needs:
 
-        --no directories:           keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory.
+        --no directories           keeps recurisve file downloading from creating a hierachy of directories. All files will get saved to the current directory.
       
-        --content-disposition:      Uses the server's suggested name for file naming as opposed to using the tail end of the URL.
+        --content-disposition      Uses the server's suggested name for file naming as opposed to using the tail end of the URL.
 
-        -A.zip:                     Only allows .zip files to be downloaded
+        -e robots=off              Execute a `.wgetrc'-style command (in this case, don't download 'robots' text file that usually comes when using a scraper)
 
-        -r:                         Downloads recursively (searches child pages w.r.t. given link)
+        -A.zip                     Only allows .zip files to be downloaded
 
-        --no-parent:                Restricts accessing links in webpages above the current directory
+        -r                         Downloads recursively (searches child pages w.r.t. given link)
 
-        -l 3:                       Restricts directory depth of files to be downloaded (all required files are 3 or fewer pages beneath either directory)
+        --no-parent                Restricts accessing links in webpages above the current directory
+
+        -l 3                       Restricts directory depth of files to be downloaded (all required files are 3 or fewer pages beneath either directory)
 
 
 Instructions:
