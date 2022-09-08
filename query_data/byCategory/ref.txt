@@ -1,0 +1,37 @@
+usData_1:
+Year - Census Year
+Total - Total US Population
+OneRace (One Race) - Total population that identifies as one race only
+White - Total population that identifies as White only
+Black (Black or African American) - Total population that identifies as Black or African American only
+NativeAm (American Indian or Alaska Native) - Total population that identifies as American Indian or Alaska Native only
+Asian - Total population that is Asian only
+PacIslander (Native Hawaiian or Pacific Islander) - Total population that identifies as Native Hawaiian or Pacific Islander only
+Other (Some Other Race) - Total population that identifies as a race other than the previously listed options
+TwoOrMore (Two Or More) - Total population that identifies as multiple races
+Hispanic - Total population that is of Hispanic origin, of any race
+NonHispanic (Non-Hispanic) - Total population that is not of Hispanic origin, of any race
+
+usData_2:
+Year - Census Year
+Total - Total US Population
+Hispanic - Total population that is of Hispanic origin, of any race
+White - Total non-Hispanic population that identifies as White only
+Black (Black or African American) - Total non-Hispanic population that identifies as Black or African American only
+NativeAm (American Indian or Alaska Native) - Total non-Hispanic population that identifies as American Indian or Alaska Native only
+Asian - Total non-Hispanic population that is Asian only
+PacIslander (Native Hawaiian or Pacific Islander) - Total non-Hispanic population that identifies as Native Hawaiian or Pacific Islander only
+Other (Some Other Race) - Total non-Hispanic population that identifies as a race other than the previously listed options
+TwoOrMore (Two Or More) - Total non-Hispanic population that identifies as multiple races
+
+hispUS and nonhispUS:
+Year - Census Year
+Total - Total US Population of (Hispanic/Non-Hispanic) origin
+OneRace (One Race) - Total population of (Hispanic/Non-Hispanic) origin that identifies as one race only
+White - Total population of (Hispanic/Non-Hispanic) origin that identifies as White only
+Black (Black or African American) - Total population of (Hispanic/Non-Hispanic) origin that identifies as Black or African American only
+NativeAm (American Indian or Alaska Native) - Total population of (Hispanic/Non-Hispanic) origin that identifies as American Indian or Alaska Native only
+Asian - Total population of (Hispanic/Non-Hispanic) origin that is Asian only
+PacIslander (Native Hawaiian or Pacific Islander) - Total population of (Hispanic/Non-Hispanic) origin that identifies as Native Hawaiian or Pacific Islander only
+Other (Some Other Race) - Total population of (Hispanic/Non-Hispanic) origin that identifies as a race other than the previously listed options
+TwoOrMore (Two Or More) - Total population of (Hispanic/Non-Hispanic) origin that identifies as multiple races
