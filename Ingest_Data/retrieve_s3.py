@@ -22,15 +22,47 @@ client = session.client('s3')
 #fetch bucket from resource
 bucket = resource.Bucket(bucket_name)
 
+#path
+sliced = os.path.dirname(__file__).split('Us_Census_Data_P3')
+root_path = sliced[0]+'Us_Census_Data_P3'
+
+def main():
+    program_running = True
+    while program_running == True:
+        print("S3 Bucket Retrieval Program:")
+        print("input the number of your selection")
+        print(f"1. Download files into root directory: {root_path}")
+        print("2. Check S3 Bucket Contents")
+        print("3. Delete file from S3 Bucket")
+        print("q to exit")
+        
+
 
 ################S3 DOWNLOAD, CHECK CONTENTS, DELETION FUNCTIONS HERE!####################
+def local_fs_contents(root_path):   
+    return os.listdir(root_path)
+    
 
-
-def download_from_s3(bucket):
+def download_from_s3(bucket, root_path):
+    root_files = local_fs_contents(root_path)
     #Downloads file into local
     for item in bucket.objects.all():
-        with open(item.key, 'wb') as f:
-            client.download_fileobj(item.bucket_name, item.key, f)
+        if item.key in root_files:
+            print(f"The file {item.key} already exists in the root directory. Would you like to overwrite? y/n")
+            answer = input()
+            if answer.lower() == 'y':
+                with open(root_path+'\\'+item.key, 'wb') as f1:
+                    print(root_path+'\\'+item.key)
+                    client.download_fileobj(item.bucket_name, item.key, f1)
+                print(f'Successful Overwrite: {item.key}')
+            else:
+                continue
+        else:   
+            with open(root_path+'\\'+item.key, 'wb') as f2:
+                print(root_path+'\\'+item.key)
+                client.download_fileobj(item.bucket_name, item.key, f2)
+            print(f'Successful Download {item.key}')
+            
             
             
 def check_bucket_contents(bucket):
@@ -48,7 +80,9 @@ def delete_file_from_bucket(bucketname, bucket, filename):
     return 
 
 
-check_bucket_contents(bucket)
-delete_file_from_bucket(bucket_name, bucket,'tgjksdyhfgkldshjfg', )
-check_bucket_contents(bucket)
+# check_bucket_contents(bucket)
+# delete_file_from_bucket(bucket_name, bucket,'tgjksdyhfgkldshjfg', )
+# check_bucket_contents(bucket)
 #download_from_s3(bucket)
+
+main()
