@@ -21,10 +21,11 @@ client = session.client('s3')
 #path
 sliced = os.path.dirname(__file__).split('Us_Census_Data_P3')
 root_path = sliced[0]+'Us_Census_Data_P3'
+bucket = resource.Bucket(bucket_name)
 
 def main():
     #fetch bucket from resource
-    bucket = resource.Bucket(bucket_name)
+    
     
     program_running = True
     while program_running == True:
