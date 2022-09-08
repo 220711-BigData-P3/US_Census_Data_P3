@@ -18,15 +18,14 @@ session = boto3.Session(
 resource = session.resource('s3')
 client = session.client('s3')
 
-
-#fetch bucket from resource
-bucket = resource.Bucket(bucket_name)
-
 #path
 sliced = os.path.dirname(__file__).split('Us_Census_Data_P3')
 root_path = sliced[0]+'Us_Census_Data_P3'
 
 def main():
+    #fetch bucket from resource
+    bucket = resource.Bucket(bucket_name)
+    
     program_running = True
     while program_running == True:
         print("S3 Bucket Retrieval Program:")
@@ -35,6 +34,24 @@ def main():
         print("2. Check S3 Bucket Contents")
         print("3. Delete file from S3 Bucket")
         print("q to exit")
+        user_input = input()
+        match user_input:
+            case "1":
+                download_from_s3(bucket, root_path)
+            case "2":
+                bucket_files = check_bucket_contents(bucket)
+                print(bucket_files)
+            case "3":
+                check_bucket_contents(bucket)
+                print("Enter file name:")
+                filename = input().strip()
+                delete_file_from_bucket(bucket_name, bucket, filename)
+            case default:
+                print('Exiting...')
+                return
+                
+                
+            
         
 
 
@@ -68,7 +85,7 @@ def download_from_s3(bucket, root_path):
 def check_bucket_contents(bucket):
     bucket_objects = bucket.objects.all()
     names = map(lambda summary: summary.key, bucket_objects)
-    return names
+    return list(names)
         
 def delete_file_from_bucket(bucketname, bucket, filename):
     names = check_bucket_contents(bucket)
