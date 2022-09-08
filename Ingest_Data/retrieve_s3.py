@@ -96,10 +96,4 @@ def delete_file_from_bucket(bucketname, bucket, filename):
     print(f"Succesfully deleted {filename}!")
     return 
 
-
-# check_bucket_contents(bucket)
-# delete_file_from_bucket(bucket_name, bucket,'tgjksdyhfgkldshjfg', )
-# check_bucket_contents(bucket)
-#download_from_s3(bucket)
-
 main()
