@@ -4,7 +4,7 @@ This project is split into 2 main parts: Data Ingestion and Data Analysis.
 *   [Data Ingest](#data-Ingestion)
 *   [Data Analysis](#data-analysis)
 
-## Data Injestion
+## Data Ingestion
 Packages needed:
 ```
 pip install python-dotenv
@@ -20,7 +20,7 @@ pip install boto3
 * [Scraping Zip Files From URL](#web-crawler-python-script-for-US-Census-Redistricting-Data-2000/2010)
 * [Ingesting 2000 Data](#ingesting-data-for-2000)
 * [Ingesting 2010 Data](#ingesting-data-for-2010)
-* [Injesting 2020 Data](#ingesting-data-for-2020)
+* [Ingesting 2020 Data](#ingesting-data-for-2020)
 
 ## Web Crawler Python Script for US Census Redistricting Data 2000/2010
 
