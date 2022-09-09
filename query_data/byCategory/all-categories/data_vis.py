@@ -128,7 +128,7 @@ allCatsChangePerc.eval("AbsChange = abs(ChPerc0010) + abs(ChPerc1020)", inplace=
 allCatsChangePerc = allCatsChangePerc[["ChPerc0010", "ChPerc1020", "ChPerc0020", "C2020", "AbsChange"]]
 allCatsChangePerc.columns = ["2000-2010", "2010-2020", "2000-2020", "C2020", "AbsChange"]
 
-print(allCatsChangePerc)
+# print(allCats)
 
 labs = []
 for elem in hisp:
@@ -140,12 +140,30 @@ for elem in nonhisp:
 
     ''''''
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan', 'maroon', 'chartreuse', 'teal', 'bisque']
-
+colors.reverse()
 font = {'family' : 'sans-serif',
         'weight' : 'normal',
         'size'   : 14}
 
 matplotlib.rc('font', **font)
+
+# 2020 population graph
+allCats.sort_values(by="C2020", inplace=True, ascending=True)
+ax = allCats.plot.barh(y="C2020", figsize=(16,8), color=colors, title="US Population by Category, 2020 Census")
+ax.set_xscale('log')
+for p in ax.patches:
+    width = p.get_width()
+    height = p.get_height()
+    x, y = p.get_xy()
+    ax.annotate(f'{width:,.0f}', (x + width/2, y + height*1.02), ha='center', va='bottom', fontsize=8)
+y_axis = ax.axes.get_yaxis()
+y_axis.set_visible(False)
+allCats.sort_values(by="C2020", inplace=True, ascending=False)
+revpatches = []
+for elem in ax.patches:
+    revpatches.append(elem)
+revpatches.reverse()
+plt.legend(labels=list(allCats.index.values), handles=revpatches, borderaxespad=0, fontsize=11, frameon=False)
 '''
 # 2000-2010, 2010-2020 change comparison graphs
 allCatsChange.sort_values(by="2010-2020", inplace=True, ascending=False)
@@ -174,7 +192,6 @@ allCatsChange.sort_values(by="2000-2010", inplace=True, ascending=False)
 # allCatsChange2 = allCatsChange[(abs(allCatsChange["2000-2010"]) + abs(allCatsChange["2010-2020"]) < 2*10**6)]
 ax = allCatsChange.plot.bar(y="2000-2010", figsize=(16,8), color=colors, title="Population Change 2000-2010")
 plt.ticklabel_format(axis='y', style='plain')
-plt.xticks(rotation=30, ha='right')
 for p in ax.patches:
     width = p.get_width()
     height = p.get_height()
@@ -276,7 +293,7 @@ for p in ax.patches:
 x_axis = ax.axes.get_xaxis()
 x_axis.set_visible(False)
 plt.legend(labels=list(allCatsChangePerc.index.values), handles=ax.patches, bbox_to_anchor=(1.04, 0.5), loc='center left', borderaxespad=0, fontsize=15, frameon=False)
-'''
+
 allCatsChangePerc.sort_values(by="2000-2020", inplace=True, ascending=False)
 ax = allCatsChangePerc.plot.bar(y="2000-2020", figsize=(16,8), color=colors, title="Population % Change 2000-2020")
 ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter())
@@ -294,7 +311,7 @@ for p in ax.patches:
 x_axis = ax.axes.get_xaxis()
 x_axis.set_visible(False)
 plt.legend(labels=list(allCatsChangePerc.index.values), handles=ax.patches, bbox_to_anchor=(1.04, 0.5), loc='center left', borderaxespad=0, fontsize=15, frameon=False)
-
+'''
 ############################################################################################################################################
 ''' ---------------------------------------- Hispanic Pop. by Race ---------------------------------------- 
 hispUS.sort_values(by=[2000], inplace=True, ascending=False)
