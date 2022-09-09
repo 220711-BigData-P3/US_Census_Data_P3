@@ -35,6 +35,7 @@ The goal of this project is to gather insights and aggregates from redistricting
 - Python - 3.10.5
 - AWS S3
 - pySpark
+- Tableau Public
 
 
 <!-- ## Screenshots
@@ -132,9 +133,44 @@ After writing the necessary data into a csv file, the ```boto3``` package was im
             return False
         return True
 ```
+## Data Querying and Visualization
+### 3 examples of queries
 
-3. examples of queries (3?)
+1. For this example, we'll refer to the question of population of different racial/ethnic categories. For the full query code, refer to the [categoryQueries](query_data/byCategory/categoryQueries.py) python file. Code for other queries is also available in the [query_data](query_data) directory.  
 
+The relevant columns in our case were:
+    * Total Population (P0010001)
+    * Population of One Race (P0010002)
+    * White Alone (P0010003)
+    * Black or African American Alone (P0010004)
+    * American Indian or Alaska Native Alone (P0010005)
+    * Asian Alone (P0010006)
+    * Native Hawaiian or Pacific Islander Alone (P0010007)
+    * Some Other Race Alone (P0010008)
+    * Two or More Races (P0010009)
+    * Hispanic of Any Race (P0020002)
+    * Non-Hispanic of Any Race (P0020003)  
+<br />
+The first query looked like this in our code, grabbing the state-by-state totals of each category and creating a temporary view.
+```python
+spark.sql("SELECT Year, STUSAB AS State, P0010001 AS Total, P0010002 AS OneRace, P0010003 AS White, P0010004 AS Black, "
+          "P0010005 AS NativeAm, P0010006 AS Asian, P0010007 AS PacIslander, P0010008 AS Other, P0010009 AS TwoOrMore, "
+          "P0020002 AS Hispanic, P0020003 AS NonHispanic FROM popdata").createOrReplaceTempView("cat_1")
+```
+
+Then, from the temporary view, we queried the sums of each category by year.
+
+```python
+usData_1 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace, SUM(White) AS White, SUM(Black) AS Black, "
+                     "SUM(NativeAm) AS NativeAm, SUM(Asian) AS Asian, SUM(PacIslander) AS PacIslander, SUM(Other) AS Other, "
+                     "SUM(TwoOrMore) AS TwoOrMore, SUM(Hispanic) AS Hispanic, SUM(NonHispanic) AS NonHispanic FROM cat_1 "
+                     "GROUP BY Year")
+```
+
+### 3 examples of data visualizations
+
+1. 2020 Population by Race/Ethnicity (Horizontal Bar Plot made in Python using pandas DataFrames and matplotlib.pyplot)
+<img src="documentation_screenshots/data_analysis_docs/mpl-window-example.png"  width="800" height="450">
 
 <!-- ## Usage
 How does one go about using it?
@@ -142,7 +178,8 @@ Provide various use cases and code examples here.
 
 `write-your-code-here` -->
 
-
+## Project Status
+Project is: _in progress_
 <!-- ## Project Status
 Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why. -->
 

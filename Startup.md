@@ -4,7 +4,7 @@ This project is split into 2 main parts: Data Ingestion and Data Analysis.
 *   [Data Ingest](#data-Ingestion)
 *   [Data Analysis](#data-analysis)
 
-## Data Ingestion
+# Data Ingestion
 Packages needed:
 ```
 pip install python-dotenv
@@ -107,7 +107,8 @@ python Ingest_Data/2020_ingest.py
 ```
 
 
-## Data Analysis
+# Data Analysis
+<!--UNDER CONSTRUCTION-->
 
 ### Goals
 1. Determine what data is needed for each data analysis question.
@@ -116,11 +117,13 @@ python Ingest_Data/2020_ingest.py
 2. Write queries to select the desired data for each data analysis question.
 3. Use data visualization tools to produce charts, graphs, tables, etc. to visually present the data.
 
-### Steps Below
+### Steps
 * [Create SparkSession](#creating-the-sparksession)
 * [Import, Filter, and Combine the Data](#importing-filtering-and-combining-the-data)
 * [Query the Data](#querying-the-requested-data)
 * [Create Data Visualizations](#creating-data-visualizations)
+    * [Tableau](#creating-visualizations-in-tableau)
+    * [Python](#creating-visualizations-in-python)
 
 ## Creating the SparkSession
 
@@ -194,15 +197,12 @@ popdata.createOrReplaceTempView("popdata")
 
 ## Querying the Requested Data
 
-For this example, we'll refer to the question of population of different racial/ethnic categories. For the full query code, refer to the categoryQueries python file
-(Location: /query_data/byCategory/categoryQueries.py).  
-  
-Code for other queries are also available in the /query_data directory.  
+For this example, we'll refer to the question of population of different racial/ethnic categories. For the full query code, refer to the [categoryQueries](query_data/byCategory/categoryQueries.py) python file. Code for other queries is also available in the [query_data](query_data) directory.  
   
 Additionally, in this example, we'll use the spark.sql() function provided by pyspark to query results.
 
-1. First, we want to query the sum totals for various categories that are provided to us in the dataset.  
-The relevant categories will be:
+1. First, you to determine what columns you need to pull from the dataset.  
+The relevant columns in our case were:
     * Total Population (P0010001)
     * Population of One Race (P0010002)
     * White Alone (P0010003)
@@ -213,19 +213,20 @@ The relevant categories will be:
     * Some Other Race Alone (P0010008)
     * Two or More Races (P0010009)
     * Hispanic of Any Race (P0020002)
-    * Non-Hispanic of Any Race (P0020003)
-    <br /><br />
-2. The next step is to write the queries to provide our desired results, the sum totals of the relevant categories. We will do this in two queries for each table.
+    * Non-Hispanic of Any Race (P0020003)  
+<br />
+2. The next step is to write the queries to provide our desired results, the sum totals of the relevant categories. We did this in two queries for each table.
 <br /><br />  
 
-The first query will look like this in our code, grabbing the state-by-state totals of each category and creating a temporary view:
+The first query looked like this in our code, grabbing the state-by-state totals of each category and creating a temporary view.
 ```python
 spark.sql("SELECT Year, STUSAB AS State, P0010001 AS Total, P0010002 AS OneRace, P0010003 AS White, P0010004 AS Black, "
           "P0010005 AS NativeAm, P0010006 AS Asian, P0010007 AS PacIslander, P0010008 AS Other, P0010009 AS TwoOrMore, "
           "P0020002 AS Hispanic, P0020003 AS NonHispanic FROM popdata").createOrReplaceTempView("cat_1")
 ```
 
-Then, from the temporary view, we will query the sums of each category by year.
+Then, from the temporary view, we queried the sums of each category by year.
+
 ```python
 usData_1 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace, SUM(White) AS White, SUM(Black) AS Black, "
                      "SUM(NativeAm) AS NativeAm, SUM(Asian) AS Asian, SUM(PacIslander) AS PacIslander, SUM(Other) AS Other, "
@@ -233,47 +234,20 @@ usData_1 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace,
                      "GROUP BY Year")
 ```
 
-For this query, we wanted to look at these categories from all angles, so there were various tables we decided to query.
-```python
-    # --------------- usData_2 (Non-Hispanic Totals for all categories, Hispanic as separate category) --------------- #
-spark.sql("SELECT Year, STUSAB AS State, P0010001 AS Total, P0020002 AS Hispanic, P0020005 AS White, P0020006 AS Black, P0020007 AS NativeAm, "
-          "P0020008 AS Asian, P0020009 AS PacIslander, P0020010 AS Other, P0020011 AS TwoOrMore FROM popdata") \
-          .createOrReplaceTempView("cat_2")
+To verify that you have your desired DataFrame, simply call the show function.
 
-usData_2 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(Hispanic) AS Hispanic, SUM(White) AS White, SUM(Black) AS Black, SUM(NativeAm) AS NativeAm, "
-                     "SUM(Asian) AS Asian, SUM(PacIslander) AS PacIslander, SUM(Other) AS Other, SUM(TwoOrMore) AS TwoOrMore FROM cat_2 "
-                     "GROUP BY Year")
-
-    # --------------- hispUS (Hispanic Totals for all categories) --------------- #
-spark.sql("SELECT Year, STUSAB AS State, P0020002 AS Total, P0010002-P0020004 AS OneRace, P0010003-P0020005 AS White, P0010004-P0020006 AS Black, "
-          "P0010005-P0020007 AS NativeAm, P0010006-P0020008 AS Asian, P0010007-P0020009 AS PacIslander, P0010008-P0020010 AS Other, "
-          "P0010009-P0020011 AS TwoOrMore FROM popdata ORDER BY Total DESC").createOrReplaceTempView("hisp")
-
-hispUS = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace, SUM(White) AS White, SUM(Black) AS Black, SUM(NativeAm) AS NativeAm, "
-                   "SUM(Asian) AS Asian, SUM(PacIslander) AS PacIslander, SUM(Other) AS Other, SUM(TwoOrMore) AS TwoOrMore FROM hisp "
-                   "GROUP BY Year")
-
-    # --------------- nonhispUS (Non-Hispanic Totals for all categories) --------------- #
-spark.sql("SELECT Year, STUSAB AS State, P0020003 AS Total, P0020004 AS OneRace, P0020005 AS White, P0020006 AS Black, P0020007 AS NativeAm, "
-          "P0020008 AS Asian, P0020009 AS PacIslander, P0020010 AS Other, P0020011 AS TwoOrMore FROM popdata ORDER BY Total DESC") \
-          .createOrReplaceTempView("nonhisp")
-
-nonhispUS = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace, SUM(White) AS White, SUM(Black) AS Black, SUM(NativeAm) AS NativeAm, "
-                      "SUM(Asian) AS Asian, SUM(PacIslander) AS PacIslander, SUM(Other) AS Other, SUM(TwoOrMore) AS TwoOrMore FROM nonhisp "
-                      "GROUP BY Year")
-```
-
-2. To verify that you have your desired DataFrame, simply call the show function.
 ```python
 usData_1.show()
 ```
+<br />
 
-3. Now that we have our desired DataFrames, we can use the DataFrame.write function to save them to CSV files.
+3. If you have your desired DataFrames, you can use the DataFrame.write.csv function to save them to CSV files.
 ```python
 savepath = # FILEPATH YOU WANT TO SAVE TO
 usData_1.write.csv(savepath + "usData_1", header=True)
 ```
-This function will create a CSV file for each partition in the DataFrame and save it to a directory entitle "usData_1". In this case, we have one partition, so there should only be one CSV files. The remaining files are not important for our project, so they can be discarded.
+This function will create a CSV file for each partition in the DataFrame and save it to a directory entitled "usData_1". In this case, we have one partition, so there should only be one CSV files. The remaining files are not important for our project, so they can be discarded.
+<br /><br />
 
 4. Submit the program as a spark job using the ```spark-submit``` command within the Ubuntu terminal.
 ```
@@ -281,9 +255,114 @@ spark-submit categoryQueries.py
 ```
 As a result, you should see a new folder in your specified directory containing 4 files.
 <br />
+
 ![Screenshot of directory and files created by DataFrame.write.csv() function.](documentation_screenshots/data_analysis_docs/DFcsv_files.png "Files generated by the write.csv function")
 
 You can rename the part-00000[...].csv file for convenience when creating data visualizations.
-
+<br /><br />
 ## Creating Data Visualizations
-<!--UNDER CONSTRUCTION-->
+
+Our team utilized the Tableau Public software, as well as the matplotlib and pandas python modules for constructing visualizations.
+
+### Creating Visualizations in Tableau
+---------- TODO ----------
+
+### Creating Visualizations In Python
+Before making visualizations in Python using matplotlib and pandas DataFrames, make sure you have these modules installed:
+```
+pip install pandas
+pip install matplotlib
+```
+
+One these are installed, you can begin working on your code.
+
+1. In order to begin creating visualizations, you need to import the necessary modules.
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib
+```
+
+2. Next, set up your DataFrames using pandas. You'll need to specify the filepath if you need to load from a file.
+```python
+## TO CREATE MANUALLY
+# create a dictionary with your data (columns = keys, data = rows)
+d = {'A':[1, 2, 3], 'B': [2, 3, 4], 'C': [3, 4, 5]}
+df = pd.DataFrame(data=d)
+# you can also set your own index values
+idx = [0, 1, 2]
+df = pd.DataFrame(data=d, index=idx)
+
+## TO LOAD FROM FILE
+file = # PATH TO FILE
+
+# DEFAULT READ FUNCTION
+df = pd.read_csv(file)
+
+# TO SET THE INDEX TO A COLUMN IN THE DATA
+df = pd.read_csv(file, index_col="COLUMN NAME")
+```
+There are also various functions you can call on pandas DataFrames to modify them to your needs.
+```python
+# TO SELECT SPECIFIC COLUMNS
+df1 = df[[LIST OF COLUMN NAMES]]
+
+# TO CHANGE COLUMN NAMES
+df.columns = [LIST OF NEW COLUMN NAMES]
+
+# TO TURN ROWS INTO COLUMNS, VICE VERSA
+df1 = df.transpose()
+
+# TO SORT A DATAFRAME BY A COLUMN
+df.sort_values(by="COLUMN NAME", inplace=True)
+# ascending order by default, set ascending=False to sort in descending order
+df.sort_values(by="COLUMN NAME", inplace=True, ascending=False)
+
+# TO CREATE A NEW COLUMN FROM OTHER COLUMNS
+# write an operation using the names of the columns you want to use
+df.eval("DESIRED OPERATION", inplace=True)
+
+# TO JOIN MULTIPLE DATAFRAMES
+df3 = df1.join(df2, on="ON CONDITION")
+# you can omit the on parameter if you want to join on the index parameters
+# otherwise, use the on parameter to set the on condition
+
+# TO UNION DATA FROM MULTIPLE DATAFRAMES
+df3 = df1.union(df2)
+```
+
+If more methods are needed, refer to the Pandas DataFrame [documentation](https://pandas.pydata.org/docs/reference/frame.html).
+
+3. You're now ready to make graphs. This will be done using the DataFrame.plot() function.
+```python
+ax = df.plot()
+```
+By default, matplotlib will create a line graph if not plot type is specified (Refer to [documentation](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot) for list of plot types.
+```python
+# TWO WAYS TO SPECIFY PLOT TYPE
+
+# 1) kind parameter
+ax = df.plot(kind="PLOT_TYPE")
+
+# 2) kind method
+ax = df.plot.PLOT_TYPE()
+```
+
+For more guidance on specific methods and functions, refer to the official documentation from [Pandas](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot) and from [matplotlib](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html). For concrete examples from this project (pie charts and bar graphs), refer to the [data_vis](query_data/byCategory/all-categories/data_vis.py) python file.
+
+4. In order to show the graphs, you must call the show() function.
+```python
+plt.show()
+```
+
+This will bring up a window displaying your graph, as well as some options in the bottom left corner.
+
+<img src="documentation_screenshots/data_analysis_docs/mpl-window-example.png"  width="800" height="450">
+
+![Options in matplotlib window.](documentation_screenshots/data_analysis_docs/mpl-config-subplots-button.png)
+
+You can edit the size of the graph using the subplot configuration settings.
+
+![Subplot configuration menu.](documentation_screenshots/data_analysis_docs/mpl-config-subplots-menu.png)
+
+When you are satisfied with your visualization, click the save icon, choose a file location, and save it.
