@@ -105,6 +105,12 @@ GROWTH2000TO2020 = spark.sql("SELECT census2020_1.STUSAB as STATE , census2020_1
         100 * (census2020_1.P0010001 - census2000_1.P0010001)/census2000_1.P0010001 as Percentage_change from census2020_1 \
         join census2000_1 on census2020_1.STUSAB = census2000_1.STUSAB  WHERE census2020_1.STUSAB != 'US' and census2020_1.STUSAB != 'PR' order by Percentage_change DESC")
 
+#POPULATION DATA 2000 TO 2020
+AVGGROWTH2000TO2020 = spark.sql("SELECT census2020_1.STUSAB as STATE , census2020_1.P0010001 as 2020_Population ,\
+        census2000_1.P0010001 as 2000_Population , census2020_1.P0010001 - census2000_1.P0010001 as Difference ,\
+        50 * (census2020_1.P0010001 - census2000_1.P0010001)/census2000_1.P0010001 as Percentage_change from census2020_1 \
+        join census2000_1 on census2020_1.STUSAB = census2000_1.STUSAB  WHERE census2020_1.STUSAB != 'US' and census2020_1.STUSAB != 'PR' order by Percentage_change DESC")
+
 #Population Increase 2020 to 2000
 Pop_Incr_2000_to_2020 = GROWTH2000TO2020.filter(func.col("Percentage_change") > 0).withColumn("Pop_Growth_Rate(2000-2020)",func.round("Percentage_change",2))\
     .select(["state","Pop_Growth_Rate(2000-2020)"])
@@ -116,8 +122,10 @@ Pop_Decr_2000_to_2020 = GROWTH2000TO2020.filter(func.col("Percentage_change") < 
 Pop_Rate_2000_2020= GROWTH2000TO2020.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
 Pop_Rate_2000_2010=GROWTH2000TO2010.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
 Pop_Rate_2010_2020=GROWTH2010TO2020.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
+Avg_Rate_2000_2020=AVGGROWTH2000TO2020.withColumn("Rate", func.round("Percentage_change",2)).select(["state","Rate"])
 
 print("Population rate change through the decades ")
+Avg_Rate_2000_2020.show()
 Pop_Rate_2000_2020.show()
 Pop_Rate_2000_2010.show()
 Pop_Rate_2010_2020.show()
@@ -133,11 +141,10 @@ Pop_Incr_2000_to_2020.show()
 Pop_Decr_2000_to_2020.show()
 
 
-
 #### WRITING THE DATA FRAME RESULTS TO FILE FOR POPULATION INCREASE AND DECREASE
 
 
-"""Pop_Incr_2010_to_2020.write.csv(path + "/Pop_Incr_2010_to_2020")
+Pop_Incr_2010_to_2020.write.csv(path + "/Pop_Incr_2010_to_2020")
 Pop_Decr_2010_to_2020.write.csv(path + "/Pop_Decr_2010_to_2020")
 
 Pop_Incr_2000_to_2010.write.csv(path + "/Pop_Incr_2000_to_2010")
@@ -145,11 +152,11 @@ Pop_Decr_2000_to_2010.write.csv(path + "/Pop_Decr_2000_to_2010")
 
 Pop_Incr_2000_to_2020.write.csv(path + "/Pop_Incr_2000_to_2020")
 Pop_Decr_2000_to_2020.write.csv(path + "/Pop_Decr_2000_to_2020")
-"""
+
 #### WRITING THE DATA FRAME RESULTS TO FILE FOR POPULATION RATE CHANGE
 
-"""Pop_Rate_2000_2020.write.csv(path + "/Total_Pop_Rate_2000_to_2020")
+Pop_Rate_2000_2020.write.csv(path + "/Total_Pop_Rate_2000_to_2020")
 Pop_Rate_2000_2010.write.csv(path + "/Total_Pop_Rate_2000_to_2010")
-Pop_Rate_2010_2020.write.csv(path + "/Total_Pop_Rate_2010_to_2020")"""
-
+Pop_Rate_2010_2020.write.csv(path + "/Total_Pop_Rate_2010_to_2020")
+Avg_Rate_2000_2020.write.csv(path + "/AVG_Pop_Rate_2010_to_2020")
 spark.stop()
