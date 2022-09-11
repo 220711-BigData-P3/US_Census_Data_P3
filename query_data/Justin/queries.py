@@ -142,6 +142,7 @@ prediction_comparison = spark.sql("""
                                     2000_to_2010_change,
                                     2000_to_2010_direction AS 2020_direction_prediction,
                                     FLOOR((2010_population * 2000_to_2010_change) + 2010_population) AS 2020_predicted,
+                                    2010_to_2020_direction,
                                     2020_population
                                 FROM 
                                     populations_with_change_view;
@@ -150,5 +151,41 @@ prediction_comparison = spark.sql("""
 
 prediction_comparison.printSchema()
 prediction_comparison.show(50)
+prediction_comparison.createOrReplaceTempView("prediction_comparison_view")
+
+trend_following_states = spark.sql("""
+                                SELECT
+                                    state,
+                                    2000_population,
+                                    2010_population,
+                                    2000_to_2010_change,
+                                    2020_predicted,
+                                    2020_population
+                                FROM
+                                    prediction_comparison_view
+                                WHERE
+                                    2020_direction_prediction = 2010_to_2020_direction
+                                   
+                                   """)
+
+trend_breaker_states = spark.sql("""
+                                SELECT
+                                    state,
+                                    2000_population,
+                                    2010_population,
+                                    2000_to_2010_change,
+                                    2020_predicted,
+                                    2020_population
+                                FROM
+                                    prediction_comparison_view
+                                WHERE
+                                    2020_direction_prediction != 2010_to_2020_direction
+                                 """)
+
+
+#Get AVG rate of change for predictions that met. compare that to avg rate of change of actual results
+
+trend_following_states.show(50)
+trend_breaker_states.show(50)
 
 
