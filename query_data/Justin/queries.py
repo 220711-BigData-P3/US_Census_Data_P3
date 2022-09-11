@@ -1,6 +1,7 @@
 import os
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
+from pyspark.context import SparkContext
 
 
 #Create SparkSession
@@ -8,7 +9,9 @@ spark = SparkSession.builder\
             .master("local")\
             .appName("2020_population_prediction")\
             .getOrCreate()
-
+            
+sc = SparkContext.getOrCreate()
+sc.setLogLevel("Warn")
             
 state_abbrevs = ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
 
@@ -97,10 +100,10 @@ populations.createOrReplaceTempView("populations")
 
 populations_with_change = spark.sql("""
                                     SELECT 
-                                        
+                                        state,
                                         2000_population,
                                         2010_population,
-                                        ((2010_population - 2000_population) / 2010_population) AS 2000_to_2010_change,
+                                        ROUND(((2010_population - 2000_population) / 2010_population), 6) AS 2000_to_2010_change,
                                         (CASE
                                             WHEN 2000_population > 2010_population THEN "Decrease"
                                             WHEN 2000_population < 2010_population THEN "Increase"
@@ -118,12 +121,34 @@ populations_with_change = spark.sql("""
                                     """)
 
 populations_with_change.show(50)
+populations_with_change.createOrReplaceTempView("populations_with_change_view")
+# prediction_comparison = spark.sql("""
+#                                   SELECT 
+#                                     state,
+#                                     2000_population,
+#                                     2010_population,
+#                                     2000_to_2010_change,
+#                                     FLOOR((2010_population * 2000_to_2010_change) + 2010_population) AS 2020_population_prediction,
+#                                     2000_to_2010_direction AS 2020_direction_prediction,
+#                                     2020_population,
+#                                   FROM 
+#                                     populations_with_change_view;
+#                                   """)
 prediction_comparison = spark.sql("""
-                                  
-                                  
+                                SELECT 
+                                    state,
+                                    2000_population,
+                                    2010_population,
+                                    2000_to_2010_change,
+                                    2000_to_2010_direction AS 2020_direction_prediction,
+                                    FLOOR((2010_population * 2000_to_2010_change) + 2010_population) AS 2020_predicted,
+                                    2020_population
+                                FROM 
+                                    populations_with_change_view;
                                   
                                   """)
 
-
+prediction_comparison.printSchema()
+prediction_comparison.show(50)
 
 
