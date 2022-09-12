@@ -87,7 +87,8 @@ populations.createOrReplaceTempView("populations")
 # populations.show()
 
 
-#Use analytic function on each row to calculate the percentage of increase/decrease
+#Scalar/SRF to calculate the percentage of change from 2000 to 2010 for each state. 
+#2000_to_2010_direction ouputs the direction of change (increase, decrease). This value will be used to compare 2020 prediction to 2020 population
 '''
 #Finding percentage increase/decrease between 2 points
     Using AK data
@@ -120,20 +121,10 @@ populations_with_change = spark.sql("""
                                         populations
                                     """)
 
-populations_with_change.show(50)
+# populations_with_change.show(50)
 populations_with_change.createOrReplaceTempView("populations_with_change_view")
-# prediction_comparison = spark.sql("""
-#                                   SELECT 
-#                                     state,
-#                                     2000_population,
-#                                     2010_population,
-#                                     2000_to_2010_change,
-#                                     FLOOR((2010_population * 2000_to_2010_change) + 2010_population) AS 2020_population_prediction,
-#                                     2000_to_2010_direction AS 2020_direction_prediction,
-#                                     2020_population,
-#                                   FROM 
-#                                     populations_with_change_view;
-#                                   """)
+
+# 2020_predicted will show the predicted 2020 population for each state based on 2000 - 2010.
 prediction_comparison = spark.sql("""
                                 SELECT 
                                     state,
@@ -150,9 +141,10 @@ prediction_comparison = spark.sql("""
                                   """)
 
 prediction_comparison.printSchema()
-prediction_comparison.show(50)
+# prediction_comparison.show(50)
 prediction_comparison.createOrReplaceTempView("prediction_comparison_view")
 
+#Compares 2020_direction_prediction to the ACTUAL direction of 2020 - 2020 population change. If they are equal, the trend prediction is correct. If not, leave out of the ouput
 trend_following_states = spark.sql("""
                                 SELECT
                                     state,
@@ -168,7 +160,9 @@ trend_following_states = spark.sql("""
                                    
                                    """)
 
-trend_breaker_states = spark.sql("""
+
+#Compares 2020_direction_prediction to the ACTUAL direction of 2010 - 2020 population change. If they are not equal, the prediction was incorrect.
+trend_breaking_states = spark.sql("""
                                 SELECT
                                     state,
                                     2000_population,
@@ -183,9 +177,9 @@ trend_breaker_states = spark.sql("""
                                  """)
 
 
-#Get AVG rate of change for predictions that met. compare that to avg rate of change of actual results
-
 trend_following_states.show(50)
-trend_breaker_states.show(50)
+trend_breaking_states.show(50)
 
-
+#Write Two Dataframes to csv:
+# trend_following_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_following_states")
+# trend_breaking_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_breaking_states")
