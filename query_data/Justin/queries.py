@@ -238,8 +238,56 @@ trend_breaking_states = spark.sql("""
                                    WHERE 
                                     (2020_population NOT BETWEEN left_bound AND 2020_predicted) AND (2020_population NOT BETWEEN 2020_predicted AND right_bound);
                                    """)
-union_trend_following_states_populations.filter(col("state") == "CA").show()
-union_trend_following_states_predictions.filter(col("state") == "CA").show()
+
+trend_breaking_states.createOrReplaceTempView("trend_breaking_states_view")
+
+union_trend_breaking_states_populations = spark.sql("""
+                                                        SELECT
+                                                            state,
+                                                            2000_population AS population,
+                                                            "01/01/2000" AS year
+                                                        FROM
+                                                            trend_breaking_states_view
+                                                        UNION
+                                                        SELECT
+                                                            state,
+                                                            2010_population AS population,
+                                                            "01/01/2010" AS year
+                                                        FROM
+                                                            trend_breaking_states_view
+                                                        UNION
+                                                        SELECT 
+                                                            state,
+                                                            2020_population AS population,
+                                                            "01/01/2020" AS year
+                                                        FROM 
+                                                            trend_breaking_states_view
+                                                    """)
+union_trend_breaking_states_predictions = spark.sql("""
+                                                        SELECT
+                                                            state,
+                                                            2000_population AS population,
+                                                            "01/01/2000" AS year
+                                                        FROM
+                                                            trend_breaking_states_view
+                                                        UNION
+                                                        SELECT
+                                                            state,
+                                                            2010_population AS population,
+                                                            "01/01/2010" AS year
+                                                        FROM
+                                                            trend_breaking_states_view
+                                                        UNION
+                                                        SELECT 
+                                                            state,
+                                                            2020_predicted AS population,
+                                                            "01/01/2020" AS year
+                                                        FROM 
+                                                            trend_breaking_states_view
+                                                    """) 
+# union_trend_breaking_states = spark.sql
+# union_trend_following_states_populations.filter(col("state") == "CA").show()
+# union_trend_following_states_predictions.filter(col("state") == "CA").show()
 # trend_breaking_states.show(50)
 print(trend_following_states.count())
 print(trend_breaking_states.count())
@@ -252,6 +300,8 @@ print(trend_breaking_states.count())
 
 
 #Write Two Dataframes to csv:
-union_trend_following_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_populations")
+# union_trend_following_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_populations")
 # union_trend_following_states_predictions.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_predictions")
-# trend_breaking_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_breaking_states")
+
+union_trend_breaking_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_breaking_states_populations")
+union_trend_breaking_states_predictions.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_breaking_states_predictions")
