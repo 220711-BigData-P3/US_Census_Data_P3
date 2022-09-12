@@ -158,11 +158,12 @@ trend_states_bound_values = spark.sql("""
                                     FROM
                                         prediction_comparison_view;
                                     """)
-#WHERE 2020_predicted BETWEEN ((((2010_population * 2000_to_2010_change) / 2) + 2010_population))
 
-#value1 = (((2010_population * 2000_to_2010_change) / 2) + 2010_population), (2020_predicted) OR (2020_predicted, (2010_population * 2000_to_2010_change) * 2) + 2010_population))
 trend_states_bound_values.createOrReplaceTempView("trend_states_bound_values_view")
 
+
+#Using the LEFT_BOUND and RIGHT_BOUND to determine whether a 2020_population vs 2020_predicted relationship is considered to be "close". 
+#The "1.5" in the declaration of the columns above can be changed to vary the size of the bounds.
 trend_following_states = spark.sql("""
                                    SELECT *
                                    FROM trend_states_bound_values_view
@@ -170,13 +171,11 @@ trend_following_states = spark.sql("""
                                     (2020_population BETWEEN left_bound AND 2020_predicted) OR (2020_population BETWEEN 2020_predicted AND right_bound);
                                    """)
 
-trend_following_states.show(50)
 trend_following_states.createOrReplaceTempView("trend_following_states_view")
-test = spark.sql("""
-                 SELECT state
-                 FROM trend_following_states_view;
-                 """)
-test.show()
+
+# The dataframes below create a table out of 3 datasets. 
+# Each dataset houses a decade's (2000, 2010, 2020) population as well as a column made to show the year for each state's population record (for line graph construction in tableu, a date column is necessary).
+# The first shows ACTUAL (2000-2020) population data, while the second shows ACTUAL (2000-2010) data then PREDICTED 2020 Data. 
 union_trend_following_states_populations = spark.sql("""
                                                         SELECT
                                                             state,
@@ -199,15 +198,7 @@ union_trend_following_states_populations = spark.sql("""
                                                         FROM 
                                                             trend_following_states_view;
                                                     """)
-# union_trend_following_states_populations = spark.sql("""
-#                                                      SELECT
-#                                                         state,
-#                                                         2000_population AS population,
-#                                                         "01/01/2000" AS year
-                                                
-                                                     
-                                                     
-#                                                      """)
+
 union_trend_following_states_predictions = spark.sql("""
                                                         SELECT
                                                             state,
@@ -231,7 +222,9 @@ union_trend_following_states_predictions = spark.sql("""
                                                             trend_following_states_view;                            
                                                     """)
 
-#Compares 2020_direction_prediction to the ACTUAL direction of 2010 - 2020 population change. If they are not equal, the prediction was incorrect.
+##Using the LEFT_BOUND and RIGHT_BOUND to determine whether a 2020_population vs 2020_predicted relationship is considered to be "close". 
+#The "1.5" in the declaration of the columns above can be changed to vary the size of the bounds.
+#Because we are looking for states that DID NOT follow the prediction, the NOT keyword is used with BETWEEN in the WHERE clause.
 trend_breaking_states = spark.sql("""
                                    SELECT *
                                    FROM trend_states_bound_values_view
@@ -285,23 +278,20 @@ union_trend_breaking_states_predictions = spark.sql("""
                                                         FROM 
                                                             trend_breaking_states_view
                                                     """) 
-# union_trend_breaking_states = spark.sql
-# union_trend_following_states_populations.filter(col("state") == "CA").show()
-# union_trend_following_states_predictions.filter(col("state") == "CA").show()
-# trend_breaking_states.show(50)
+
+
+#Check to make sure total number of states is 50
 print(trend_following_states.count())
 print(trend_breaking_states.count())
 
 
 
-# trend_breaking_states.show(50)
 
 
 
-
-#Write Two Dataframes to csv:
+#Write 4 Dataframes to csv:
 # union_trend_following_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_populations")
 # union_trend_following_states_predictions.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_predictions")
 
-union_trend_breaking_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_breaking_states_populations")
-union_trend_breaking_states_predictions.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_breaking_states_predictions")
+# union_trend_breaking_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_breaking_states_populations")
+# union_trend_breaking_states_predictions.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_breaking_states_predictions")
