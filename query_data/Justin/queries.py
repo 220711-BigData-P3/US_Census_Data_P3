@@ -160,6 +160,41 @@ trend_following_states = spark.sql("""
                                    
                                    """)
 
+trend_following_states.createOrReplaceTempView("trend_following_states_view")
+union_trend_following_states = spark.sql("""
+                            SELECT
+                                state,
+                                2000_population AS population,
+                                "01/01/2000" AS year,
+                                "False" AS prediction
+                            FROM
+                                trend_following_states_view
+                            UNION
+                            SELECT
+                                state,
+                                2010_population AS population,
+                                "01/01/2010" AS year,
+                                "False" AS prediction
+                            FROM
+                                trend_following_states_view
+                            UNION
+                            SELECT 
+                                state,
+                                2020_predicted AS population,
+                                "01/01/2020" AS year,
+                                "True" AS prediction
+                            FROM 
+                                trend_following_states_view
+                            UNION
+                            SELECT
+                                state,
+                                2020_population AS population,
+                                "01/01/2020" AS year,
+                                "False" AS prediction
+                            FROM
+                                trend_following_states_view
+                            """)
+
 
 #Compares 2020_direction_prediction to the ACTUAL direction of 2010 - 2020 population change. If they are not equal, the prediction was incorrect.
 trend_breaking_states = spark.sql("""
@@ -177,9 +212,11 @@ trend_breaking_states = spark.sql("""
                                  """)
 
 
-trend_following_states.show(50)
-trend_breaking_states.show(50)
+union_trend_following_states.show(200)
+# trend_breaking_states.show(50)
+
+
 
 #Write Two Dataframes to csv:
-# trend_following_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_following_states")
+union_trend_following_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_following_states")
 # trend_breaking_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_breaking_states")
