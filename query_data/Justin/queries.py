@@ -64,22 +64,6 @@ populations = spark.sql("""
                       """)
 
 print(populations.count()) #50
-'''
-    Sample show of populations dataframe:
-    
-        |State|2000_population|2010_population|
-        +-----+---------------+---------------+
-        |   AK|         626932|         710231|
-        |   AL|        4447100|        4779736|
-        |   AR|        2673400|        2915918|
-        |   AZ|        5130632|        6392017|
-        |   CA|       33871648|       37253956|
-        |   CO|        4301261|        5029196|
-        |   CT|        3405565|        3574097|
-        |   DE|         783600|         897934|
-        |   FL|       15982378|       18801310|
-        
-'''
 
 #Create view of joined populations table
 
