@@ -145,78 +145,113 @@ prediction_comparison.printSchema()
 prediction_comparison.createOrReplaceTempView("prediction_comparison_view")
 
 #Compares 2020_direction_prediction to the ACTUAL direction of 2020 - 2020 population change. If they are equal, the trend prediction is correct. If not, leave out of the ouput
+trend_states_bound_values = spark.sql("""
+                                   SELECT
+                                        state,
+                                        2000_population,
+                                        2010_population,
+                                        2000_to_2010_change,
+                                        2020_predicted,
+                                        FLOOR((2010_population * 2000_to_2010_change / 1.5) + 2010_population) AS left_bound,
+                                        FLOOR((2010_population * 2000_to_2010_change * 1.5) + 2010_population) AS right_bound,
+                                        2020_population
+                                    FROM
+                                        prediction_comparison_view;
+                                    """)
+#WHERE 2020_predicted BETWEEN ((((2010_population * 2000_to_2010_change) / 2) + 2010_population))
+
+#value1 = (((2010_population * 2000_to_2010_change) / 2) + 2010_population), (2020_predicted) OR (2020_predicted, (2010_population * 2000_to_2010_change) * 2) + 2010_population))
+trend_states_bound_values.createOrReplaceTempView("trend_states_bound_values_view")
+
 trend_following_states = spark.sql("""
-                                SELECT
-                                    state,
-                                    2000_population,
-                                    2010_population,
-                                    2000_to_2010_change,
-                                    2020_predicted,
-                                    2020_population
-                                FROM
-                                    prediction_comparison_view
-                                WHERE
-                                    2020_direction_prediction = 2010_to_2020_direction
-                                   
+                                   SELECT *
+                                   FROM trend_states_bound_values_view
+                                   WHERE 
+                                    (2020_population BETWEEN left_bound AND 2020_predicted) OR (2020_population BETWEEN 2020_predicted AND right_bound);
                                    """)
 
+trend_following_states.show(50)
 trend_following_states.createOrReplaceTempView("trend_following_states_view")
-union_trend_following_states = spark.sql("""
-                            SELECT
-                                state,
-                                2000_population AS population,
-                                "01/01/2000" AS year,
-                                "False" AS prediction
-                            FROM
-                                trend_following_states_view
-                            UNION
-                            SELECT
-                                state,
-                                2010_population AS population,
-                                "01/01/2010" AS year,
-                                "False" AS prediction
-                            FROM
-                                trend_following_states_view
-                            UNION
-                            SELECT 
-                                state,
-                                2020_predicted AS population,
-                                "01/01/2020" AS year,
-                                "True" AS prediction
-                            FROM 
-                                trend_following_states_view
-                            UNION
-                            SELECT
-                                state,
-                                2020_population AS population,
-                                "01/01/2020" AS year,
-                                "False" AS prediction
-                            FROM
-                                trend_following_states_view
-                            """)
-
+test = spark.sql("""
+                 SELECT state
+                 FROM trend_following_states_view;
+                 """)
+test.show()
+union_trend_following_states_populations = spark.sql("""
+                                                        SELECT
+                                                            state,
+                                                            2000_population AS population,
+                                                            "01/01/2000" AS year
+                                                        FROM
+                                                            trend_following_states_view
+                                                        UNION
+                                                        SELECT
+                                                            state,
+                                                            2010_population AS population,
+                                                            "01/01/2010" AS year
+                                                        FROM
+                                                            trend_following_states_view
+                                                        UNION
+                                                        SELECT 
+                                                            state,
+                                                            2020_population AS population,
+                                                            "01/01/2020" AS year
+                                                        FROM 
+                                                            trend_following_states_view;
+                                                    """)
+# union_trend_following_states_populations = spark.sql("""
+#                                                      SELECT
+#                                                         state,
+#                                                         2000_population AS population,
+#                                                         "01/01/2000" AS year
+                                                
+                                                     
+                                                     
+#                                                      """)
+union_trend_following_states_predictions = spark.sql("""
+                                                        SELECT
+                                                            state,
+                                                            2000_population AS population,
+                                                            "01/01/2000" AS year
+                                                        FROM
+                                                            trend_following_states_view
+                                                        UNION
+                                                        SELECT
+                                                            state,
+                                                            2010_population AS population,
+                                                            "01/01/2010" AS year
+                                                        FROM
+                                                            trend_following_states_view
+                                                        UNION
+                                                        SELECT
+                                                            state,
+                                                            2020_predicted AS population,
+                                                            "01/01/2020" AS year
+                                                        FROM 
+                                                            trend_following_states_view;                            
+                                                    """)
 
 #Compares 2020_direction_prediction to the ACTUAL direction of 2010 - 2020 population change. If they are not equal, the prediction was incorrect.
 trend_breaking_states = spark.sql("""
-                                SELECT
-                                    state,
-                                    2000_population,
-                                    2010_population,
-                                    2000_to_2010_change,
-                                    2020_predicted,
-                                    2020_population
-                                FROM
-                                    prediction_comparison_view
-                                WHERE
-                                    2020_direction_prediction != 2010_to_2020_direction
-                                 """)
+                                   SELECT *
+                                   FROM trend_states_bound_values_view
+                                   WHERE 
+                                    (2020_population NOT BETWEEN left_bound AND 2020_predicted) AND (2020_population NOT BETWEEN 2020_predicted AND right_bound);
+                                   """)
+union_trend_following_states_populations.filter(col("state") == "CA").show()
+union_trend_following_states_predictions.filter(col("state") == "CA").show()
+# trend_breaking_states.show(50)
+print(trend_following_states.count())
+print(trend_breaking_states.count())
 
 
-union_trend_following_states.show(200)
+
 # trend_breaking_states.show(50)
 
 
 
+
 #Write Two Dataframes to csv:
-union_trend_following_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_following_states")
+union_trend_following_states_populations.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_populations")
+# union_trend_following_states_predictions.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/union_trend_following_states_predictions")
 # trend_breaking_states.write.option("header", True).csv("file:/mnt/c/Users/jchou/Desktop/Us_Census_Data_P3/query_data/Justin/trend_breaking_states")
