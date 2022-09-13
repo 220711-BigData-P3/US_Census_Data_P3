@@ -1,13 +1,15 @@
 # US Census Redistricting Data Analysis 
 Analyzation of US redistricting data for the years 2000, 2010 and 2020
 
-
-<!-- ## Table of Contents
+## Table of Contents
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
 * [Features](#features)
-* [Screenshots](#screenshots)
 * [Setup](#setup)
+* [Usage](#usage)
+    - [Data Ingestion](#data-ingestion)
+    - [Data Analysis](#data-querying-and-visualization)
+<!--* [Screenshots](#screenshots)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact) -->
 
@@ -33,6 +35,8 @@ The goal of this project is to gather insights and aggregates from redistricting
 
 ## Technologies Used
 - Python - 3.10.5
+    * pandas
+    * matplotlib
 - AWS S3
 - pySpark
 - Tableau Public
@@ -55,10 +59,13 @@ pip install boto3
 pip install python-dotenv
 pip install zipfile
 
+# For data visualization in Python
+pip install pandas
+pip install matplotlib
 ```
 
 ## Usage
-
+### Data Ingestion
 #### Web Scraping for Downloading Zip Files
 ```
 os.system('wget --no-directories --content-disposition -e robots=off -A.zip -r --no-parent -l 3 https://www2.census.gov/census_2000/datasets/redistricting_file_--p1_94-171/')
@@ -133,8 +140,8 @@ After writing the necessary data into a csv file, the ```boto3``` package was im
             return False
         return True
 ```
-## Data Querying and Visualization
-### 3 examples of queries
+### Data Querying and Visualization
+#### Examples of queries
 
 1. For this example, we'll refer to the question of population of different racial/ethnic categories. For the full query code, refer to the [categoryQueries](query_data/byCategory/categoryQueries.py) python file. Code for other queries is also available in the [query_data](query_data) directory.  
 
@@ -167,19 +174,27 @@ usData_1 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace,
                      "GROUP BY Year")
 ```
 
-### 3 examples of data visualizations
+2. [EXAMPLE QUERY]
+
+3. [EXAMPLE QUERY]
+
+#### Examples of data visualizations
 
 1. 2020 Population by Race/Ethnicity (Horizontal Bar Plot made in Python using pandas DataFrames and matplotlib.pyplot)
 <img src="documentation_screenshots/data_analysis_docs/mpl-window-example.png"  width="800" height="450">
 
+2. 2000-2010 Trend Line Analysis, Predicted 2020 Population vs. Actual 2020 Census Count (Line Chart made in Tableau)
+<img src="documentation_screenshots/data_analysis_docs/tableau-preview-trendlinepredictions.png"  width="870" height="468">
+
+3. [EXAMPLE VISUALIZATION]
+
 <!-- ## Usage
 How does one go about using it?
 Provide various use cases and code examples here.
-
 `write-your-code-here` -->
 
 ## Project Status
-Project is: _in progress_
+Project is: _In Progress_
 <!-- ## Project Status
 Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why. -->
 
@@ -192,7 +207,19 @@ Give credit here.
 
 
 ## Contributors
-Names here!
+* Jed Asela Tix
+* Justin Cho
+* Jordan Edelman
+* Raymond Fillingame
+* Keynon Hawkins
+* Nithia James
+* Adetunji Mofobi
+* Jacob Nesteruck
+* Phai Nguyen
+* Andrew Olague
+* Martin Salinas Jr.
+* Benjamin Serio
+* Spencer Trumbore
 
 
 
