@@ -296,11 +296,10 @@ In this case, the data needs to be split by row (State), so we drag the "State" 
 <br /><br />
 You can also modify some of the elements of the graph directly.
 <br /><br />
-<img src="documentation_screenshots/data_analysis_docs/tableau/edit-1.png"  width="300" height="690" style="float:left;padding-right:10px">
-<img src="documentation_screenshots/data_analysis_docs/tableau/edit-2.png"  width="450" height="300" style="vertical-align:top">
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-1.png"  width="300" height="690">
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-2.png"  width="450" height="300">
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-3.png"  width="530" height="180">
 <br /><br />
-<img src="documentation_screenshots/data_analysis_docs/tableau/edit-3.png"  width="530" height="180" style="vertical-align:bottom">
-<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
 5. Open a new dashboard. This is where you will be setting up your graph to be saved and used in your presentation.
 <br /><br />
