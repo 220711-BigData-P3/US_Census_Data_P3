@@ -265,7 +265,64 @@ You can rename the part-00000[...].csv file for convenience when creating data v
 Our team utilized the Tableau Public software, as well as the matplotlib and pandas python modules for constructing visualizations.
 
 ### Creating Visualizations in Tableau
----------- TODO ----------
+1. Navigate to the [Tableau Public website](https://public.tableau.com/app/discover) and select Web Authoring under the Create menu to create a new Tableau workbook. Make sure you are logged in to a Tableau account. If you do not have an account, you will be prompted to create one.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/public-main.png"  width="916" height="391">
+<br /><br />
+
+2. Upload your data to the Tableau workbook. You can either open a selection window to choose your file or drag and drop your file from an open folder.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/upload.png"  width="960" height="481">
+<br /><br />
+Once it's uploaded, create an extract of your data. This may take a moment to complete.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/extract.png"  width="806" height="435">
+<br /><br />
+
+3. Open a worksheet (Sheet 1 is created by default). Drag your column data ("Year" in our case) from the left panel to the columns box, then drag your row or field data ("Population" in our case) to the rows box. You'll see the visualizations being created as you add data elements to the plot.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/columns.png"  width="736" height="384" style="vertical-align:top">
+<img src="documentation_screenshots/data_analysis_docs/tableau/rows.png"  width="522" height="605">
+<br /><br />
+In this case, the data needs to be split by row (State), so we drag the "State" data from the left panel to the color button inside the Marks panel.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/multi-line.png"  width="659" height="512">
+<img src="documentation_screenshots/data_analysis_docs/tableau/multi-line-2.png"  width="659" height="512">
+<br /><br />
+
+4. Make any alterations to the data you need. You can enable labels and other features by utilizing the Marks panel. You can filter data by a desired parameter by dragging data from the left panel into the Filter panel, then choosing how you want to filter.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/filter.png"  width="736" height="846">
+<br /><br />
+You can also modify some of the elements of the graph directly.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-1.png"  width="300" height="690" style="float:left;padding-right:10px">
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-2.png"  width="450" height="300" style="vertical-align:top">
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-3.png"  width="530" height="180" style="vertical-align:bottom">
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+5. Open a new dashboard. This is where you will be setting up your graph to be saved and used in your presentation.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/new-dash.png"  width="156" height="62">
+<br /><br />
+Drag your worksheet from the panel on the left and drop it into the large blank area.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/drag-drop-dash.png"  width="1218" height="853">
+<br /><br />
+Your graph from before will now be shown, in much better form than before. You can make further edits here if necessary, and you can always return to the worksheet if you need to make any changes to the data.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/edit-dash.png"  width="1223" height="853">
+<br /><br />
+If you need to, you can adjust the size of the dashboard. The final image pixel resolution matches the resolution specified here.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/adjust-dash-size.png"  width="286" height="235">
+<br /><br />
+
+6. Finally, when you are satisfied with your visualization, click the download button and select "Image" to save the data visualization to your system.
+<br /><br />
+<img src="documentation_screenshots/data_analysis_docs/tableau/save-download.png"  width="510" height="210">
+<br /><br />
 
 ### Creating Visualizations In Python
 Before making visualizations in Python using matplotlib and pandas DataFrames, make sure you have these modules installed:
