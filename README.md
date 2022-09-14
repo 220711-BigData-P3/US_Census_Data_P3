@@ -174,7 +174,7 @@ usData_1 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace,
                      "GROUP BY Year")
 ```
 
-2. The example below outlines noteworthy processes used to construct a prediction trendline from 2010 - 2020. Also included are the steps to display predicted vs actual populations. For the full query code, refer to the [categoryQueries](query_data/Justin/queries.py) python file.
+2. The example below outlines noteworthy processes used to construct a prediction trendline from 2010 - 2020. Also included are the steps to display predicted vs actual populations. For the full query code, refer to the [Justin/queries](query_data/Justin/queries.py) python file.
 
 ```createTempViews()``` iteratively filters each decade's dataframe using a list of applicable state abbreviations, along with some column renaming. Then the function constructs temporary views for each respective decade.
 
