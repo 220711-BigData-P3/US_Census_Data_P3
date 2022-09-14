@@ -174,7 +174,34 @@ usData_1 = spark.sql("SELECT Year, SUM(Total) AS Total, SUM(OneRace) AS OneRace,
                      "GROUP BY Year")
 ```
 
-2. [EXAMPLE QUERY]
+2. The example below outlines noteworthy processes used to construct a prediction trendline from 2010 - 2020. Also included are the steps to display predicted vs actual populations. For the full query code, refer to the [categoryQueries](query_data/Justin/queries.py) python file.
+
+'''createTempViews()''' iteratively filters each decade's dataframe using a list of applicable state abbreviations, along with some column renaming. Then the function constructs temporary views for each respective decade:
+
+python```
+filenames = ['2000_1.csv', '2010_1.csv', '2020_P1.csv']
+
+def createTempViews():
+    for file in filenames:
+        year = file.split("_")[0]
+        filepath = project_root_path + f'/{file}'
+        print(filepath)
+        df = spark.read.option('header', True).option("inferSchema", True).csv(filepath)
+        filtered_df = df.select(col("STUSAB"), col("P0010001").alias(f"population")).filter(col("STUSAB").isin(*state_abbrevs))
+        filtered_df.createOrReplaceTempView(f"{file.split('.')[0]}_view")
+        
+createTempViews()
+spark.sql('SHOW VIEWS').show()
+'''
+    Output of show():
+        +---------+------------+-----------+
+        |namespace|    viewName|isTemporary|
+        +---------+------------+-----------+
+        |         | 2000_1_view|       true|
+        |         | 2010_1_view|       true|
+        |         |2020_p1_view|       true|
+        +---------+------------+-----------+
+```
 
 3. [EXAMPLE QUERY]
 
