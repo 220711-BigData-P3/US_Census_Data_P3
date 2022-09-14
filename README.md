@@ -202,6 +202,7 @@ spark.sql('SHOW VIEWS').show()
         +---------+------------+-----------+
 ```
 After joining all three views by state abbreviation, ```2000_to_2010_change``` is calculated.
+
 ```(original_number - new_number) / original_number)```
 ```python
 ROUND(((2010_population - 2000_population) / 2000_population), 6) AS 2000_to_2010_change
@@ -211,7 +212,7 @@ The column value ```2000_to_2010_change``` is used to predict the population for
 FLOOR((2010_population * 2000_to_2010_change) + 2010_population) AS 2020_predicted,
 ```
 The accuracy of the prediction was determined by employing the use of LEFT_BOUND and RIGHT_BOUND values.
-The 2 values were used with the actual 2020 population to create a range of values that would deem a prediction to be accurate.
+The 2 values were used to create a range of values that would deem a prediction to be accurate.
 
 ```python
 #Example for a positive change value LEFT BOUND: 
