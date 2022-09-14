@@ -201,6 +201,49 @@ spark.sql('SHOW VIEWS').show()
         |         |2020_p1_view|       true|
         +---------+------------+-----------+
 ```
+After joining all three views by state abbreviation, ```2000_to_2010_change``` is calculated.
+```(original_number - new_number) / original_number)```
+```python
+ROUND(((2010_population - 2000_population) / 2000_population), 6) AS 2000_to_2010_change
+```
+The column value ```2000_to_2010_change``` is used to predict the population for 2020 for each state
+```python
+FLOOR((2010_population * 2000_to_2010_change) + 2010_population) AS 2020_predicted,
+```
+The accuracy of the prediction was determined by employing the use of LEFT_BOUND and RIGHT_BOUND values.
+The 2 values were used with the actual 2020 population to create a range of values that would deem a prediction to be accurate.
+
+```python
+#Example for a positive change value LEFT BOUND: 
+population_2010 = 1,000,000
+change = 0.10 #10% increase
+(population_2010 * change / 1.5) + population_2010 = #1,066,666 (floored)
+
+#Example for a positive change value RIGHT BOUND:
+change = 0.10 #10% increase
+(population_2010 * change * 1.5) + population_2010 = #1,150,000 #floored
+
+trend_following_states = spark.sql("""
+                                   SELECT *
+                                   FROM trend_states_bound_values_view
+                                   WHERE 
+                                    (2020_population BETWEEN left_bound AND right_bound);
+                                   """)
+
+trend_following_states.createOrReplaceTempView("trend_following_states_view")
+
+trend_breaking_states = spark.sql("""
+                                   SELECT *
+                                   FROM trend_states_bound_values_view
+                                   WHERE 
+                                    (2020_population NOT BETWEEN left_bound AND right_bound);
+                                   """)
+
+trend_breaking_states.createOrReplaceTempView("trend_breaking_states_view")
+
+```
+
+If the actual 2020 population is in between 1,066,666 - 1,150,000 the prediction will be considered accurate. The equation above would work for a negative change value as well (A decrease in population from 2000 to 2010).
 
 
 3. [EXAMPLE QUERY]

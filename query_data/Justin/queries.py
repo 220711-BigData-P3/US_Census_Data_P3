@@ -80,7 +80,7 @@ populations.createOrReplaceTempView("populations")
         point2010 = 710231
         
         1. Subtract point2000 from point2010: 710231 - 626932
-        2. Divide the amount by point 2010 (decimal) ROUND (2) * 100 for percentage
+        2. Divide the amount by point 2000 (decimal) ROUND (2) * 100 for percentage
 '''
 
 populations_with_change = spark.sql("""
@@ -88,7 +88,7 @@ populations_with_change = spark.sql("""
                                         state,
                                         2000_population,
                                         2010_population,
-                                        ROUND(((2010_population - 2000_population) / 2010_population), 6) AS 2000_to_2010_change,
+                                        ROUND(((2010_population - 2000_population) / 2000_population), 6) AS 2000_to_2010_change,
                                         (CASE
                                             WHEN 2000_population > 2010_population THEN "Decrease"
                                             WHEN 2000_population < 2010_population THEN "Increase"
@@ -152,7 +152,7 @@ trend_following_states = spark.sql("""
                                    SELECT *
                                    FROM trend_states_bound_values_view
                                    WHERE 
-                                    (2020_population BETWEEN left_bound AND 2020_predicted) OR (2020_population BETWEEN 2020_predicted AND right_bound);
+                                    (2020_population BETWEEN left_bound AND right_bound);
                                    """)
 
 trend_following_states.createOrReplaceTempView("trend_following_states_view")
@@ -213,7 +213,7 @@ trend_breaking_states = spark.sql("""
                                    SELECT *
                                    FROM trend_states_bound_values_view
                                    WHERE 
-                                    (2020_population NOT BETWEEN left_bound AND 2020_predicted) AND (2020_population NOT BETWEEN 2020_predicted AND right_bound);
+                                    (2020_population NOT BETWEEN left_bound AND right_bound);
                                    """)
 
 trend_breaking_states.createOrReplaceTempView("trend_breaking_states_view")
