@@ -247,7 +247,7 @@ trend_breaking_states.createOrReplaceTempView("trend_breaking_states_view")
 If the actual 2020 population is in between 1,066,666 - 1,150,000 the prediction will be considered accurate. The equation above would work for a negative change value as well (A decrease in population from 2000 to 2010).
 
 
-3. [EXAMPLE QUERY]
+<!-- 3. [EXAMPLE QUERY] -->
 
 #### Examples of data visualizations
 
@@ -257,7 +257,7 @@ If the actual 2020 population is in between 1,066,666 - 1,150,000 the prediction
 2. 2000-2010 Trend Line Analysis, Predicted 2020 Population vs. Actual 2020 Census Count (Line Chart made in Tableau)
 <img src="documentation_screenshots/data_analysis_docs/tableau-preview-trendlinepredictions.png"  width="870" height="468">
 
-3. [EXAMPLE VISUALIZATION]
+<!-- 3. [EXAMPLE VISUALIZATION] -->
 
 <!-- ## Usage
 How does one go about using it?
